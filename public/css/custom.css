@@ -1,0 +1,95 @@
+a.current { background: #3699FF; color: white; padding: 5px 10px; }
+.center{ text-align: center; }
+.box_altera_senha{ display: none; }
+.reload_evento{ cursor: pointer; }
+.modal-top{ margin-top: 150px !important; }
+.timeline-label-large { width: 90px !important;}
+.timeline-6:before { left: 90px !important;}
+.form-control.is-invalid { background-image: none !important; }
+.form-control.is-valid { background-image: none !important; }
+.box-outro { display: none;}
+.box-complemento { display: none;}
+.box-indeferimento { display: none;}
+.box-deferimento-isencao { display: none;}
+.btn-busca-rapida{ border: none; background-color: transparent;}
+.acoes-80{width: 80px;}
+.table-dashboard tr td { padding: 4px;}
+.file-isencao { margin-right: 5px;;}
+  .file-isencao:hover {color: #3699FF;}
+.paginate_button { padding: 5px;}
+  .paginate_button:hover { cursor: pointer;}
+.dataTables_paginate {margin-right: 10px;}
+.box-condicao:not(:last-child) {border-bottom: 1px solid #e5e5e5; padding-bottom: 7px; padding-top: 7px;}
+.btn-avaliar-condicao:hover { cursor: pointer;}
+.map {
+    font-size: 10px;
+  }
+  .map .shape {
+    fill: #1abc9c;
+    transition: all 350ms linear;
+  }
+  .map .shape:hover {
+    fill: #16a085;
+  }
+  .map .label-state {
+    fill: #FFF;
+  }
+  .map .icon-state {
+    fill: #bdc3c7;
+  }
+  @media only screen and (max-width: 2500px) {
+      .cartao-questao {
+        border: 1px solid;
+        padding-left: 7px;
+        padding-right: 7px;
+
+      }
+  }
+
+  @media only screen and (min-width: 2500px) {
+      .cartao-questao {
+          border: 1px solid;
+      }
+  }
+
+  .cartao-questao-erro {
+    background-color: #F1948A;
+  }
+  .cartao-questao-resposta{
+
+  }
+  .cartao-questao-header{
+    background-color: #CDD3D8;
+  }
+
+  .cartao-questao-header-inscricao{
+    max-width: 60px;
+  }
+
+ .cartao-questao-header-resposta{
+     min-width: 5px;
+ }
+
+ .cartao-questao-resposta-ok {
+     background-color: palegreen;
+ }
+
+ .cartao-salvar {
+    cursor: pointer;
+ }
+
+.cartao-questao-criticado {
+    background-color: #E9F7EF;
+}
+
+.img-zoom-container {
+    position:fixed;
+    top: 70%;
+    left: 15%;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    z-index: 1000;
+}
+
