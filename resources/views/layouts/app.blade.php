@@ -79,7 +79,6 @@
 						<div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
 							<!--begin::Menu Nav-->
 							<ul class="menu-nav">
-
                                 <li class="menu-item {{ (Session::get('menu_pai') == 'dashboard') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('/') }}" class="menu-link">
                                         <span class="svg-icon menu-icon">
@@ -88,6 +87,44 @@
                                         <span class="menu-text">Dashboard</span>
                                     </a>
                                 </li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('local') }}" class="menu-link">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-map-marker"></i>
+                                        </span>
+                                        <span class="menu-text">Local</span>
+                                    </a>
+                                </li>
+								<li class="menu-item menu-item-submenu {{ (Session::get('menu_pai') == 'setor') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+									<a href="javascript:;" class="menu-link menu-toggle">
+										<span class="svg-icon menu-icon">
+											<i class="fas fa-building"></i>
+										</span>
+										<span class="menu-text">Setor</span>
+										<i class="menu-arrow"></i>
+									</a>
+									<div class="menu-submenu">
+										<i class="menu-arrow"></i>
+										<ul class="menu-subnav">
+											<li class="menu-item {{ (Session::get('menu_item') == 'setores') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+												<a href="{{ url('setor') }}" class="menu-link">
+													<i class="menu-bullet menu-bullet-line">
+														<span></span>
+													</i>
+													<span class="menu-text">Setores</span>
+												</a>
+											</li>
+											<li class="menu-item {{ (Session::get('menu_item') == 'setores') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+												<a href="{{ url('') }}" class="menu-link">
+													<i class="menu-bullet menu-bullet-line">
+														<span></span>
+													</i>
+													<span class="menu-text">Espaços</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</li>
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true">
                                     <a href="{{ route('logout') }}" class="menu-link menu-toggle" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <span class="svg-icon menu-icon">
