@@ -19,7 +19,7 @@ class HomeController extends Controller
 
         Session::forget('menu_item');
         Session::forget('menu_subitem');
-        
+
         $this->evento = Session::get('evento_id');
     }
 
@@ -27,7 +27,7 @@ class HomeController extends Controller
     {
         Session::put('menu_pai','dashboard');
         $breadcrumb = $this->breadcrumb;
-            
+
         return view('home', compact('breadcrumb'));
     }
 

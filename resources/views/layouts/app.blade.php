@@ -88,12 +88,26 @@
                                     </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
-                                    <a href="{{ url('local') }}" class="menu-link">
+                                    <a href="javascript:;"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-map-marker"></i>
                                         </span>
                                         <span class="menu-text">Local</span>
+                                        <i class="menu-arrow"></i>
                                     </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item {{ (Session::get('menu_item') == 'locais') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ url('locais') }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-line">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Listar</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
 								<li class="menu-item menu-item-submenu {{ (Session::get('menu_pai') == 'setor') ? 'menu-item-open' : '' }}" aria-haspopup="true">
 									<a href="javascript:;" class="menu-link menu-toggle">
@@ -189,7 +203,7 @@
                                         </div>
                                     </div>
                                 @endpermission
-                                
+
                                     <div class="topbar-item">
                                         <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1" id="kt_quick_cart_toggle">
                                             <a title="Sair" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -206,7 +220,7 @@
                                             </a>
                                         </div>
                                     </div>
-                           
+
 								<!--begin::User-->
                                 <div class="topbar-item">
                                     <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2" id="">
