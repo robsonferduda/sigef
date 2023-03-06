@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Local;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
@@ -28,29 +29,18 @@ class LocalController extends Controller
         Session::put('menu_item','locais');
         $breadcrumb = $this->breadcrumb;
 
-
-
         if($request->ajax()) {
-            return DataTables::of($eventos)
-                ->addColumn('codigo', function ($evento) {
-                    return $evento->cd_evento_eve;
+
+            $locais = Local::orderBy('nm_local_prova_lop')->get();
+
+            return DataTables::of($locais)
+                ->addColumn('codigo', function ($local) {
+                    return $local->cd_local_prova_lop;
                 })
-                ->addColumn('ano-ingresso', function ($evento) {
-                    return $evento->nu_ano_ingresso_eve;
+                ->addColumn('local', function ($local) {
+                    return $local->nm_local_prova_lop;
                 })
-                ->addColumn('evento', function ($evento) {
-                    return $evento->nm_evento_eve;
-                })
-                ->addColumn('mes-ano', function ($evento) {
-                    return $evento->nu_mes_eve.'/'.$evento->nu_ano_eve;
-                })
-                ->addColumn('dt_inicio', function ($evento) {
-                    return date('d/m/Y H:i', strtotime($evento->dt_inicio_inscricao_eve));
-                })
-                ->addColumn('dt_termino', function ($evento) {
-                    return date('d/m/Y H:i', strtotime($evento->dt_fim_inscricao_eve));
-                })
-                ->addColumn('acoes', function ($evento) {
+                ->addColumn('acoes', function ($local) {
                     return '<button class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-sm btn-clean btn-icon" title="Excluir"><i class="fas fa-trash"></i></button>';
                 })
@@ -58,9 +48,17 @@ class LocalController extends Controller
                 ->make(true);
         }
 
+        return view('local.locais', compact('breadcrumb'));
+    }
 
+    public function novo(Request $request)
+    {
+        /* Marcação de Menus */
+        Session::put('menu_item','locais');
 
-        return view('home', compact('breadcrumb'));
+        $breadcrumb = $this->breadcrumb;
+
+        return view('local.novo', compact('breadcrumb'));
     }
 
 }

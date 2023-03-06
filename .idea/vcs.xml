@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../docker" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../sigeve" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../vestibular-inscricao" vcs="Git" />
+  </component>
+</project>

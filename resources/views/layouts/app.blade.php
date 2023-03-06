@@ -121,14 +121,22 @@
 										<i class="menu-arrow"></i>
 										<ul class="menu-subnav">
 											<li class="menu-item {{ (Session::get('menu_item') == 'setores') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-												<a href="{{ url('setor') }}" class="menu-link">
+												<a href="{{ url('setores') }}" class="menu-link">
 													<i class="menu-bullet menu-bullet-line">
 														<span></span>
 													</i>
 													<span class="menu-text">Setores</span>
 												</a>
 											</li>
-											<li class="menu-item {{ (Session::get('menu_item') == 'setores') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                            <li class="menu-item {{ (Session::get('menu_item') == 'blocos') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ url('blocos') }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-line">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Blocos</span>
+                                                </a>
+                                            </li>
+											<li class="menu-item {{ (Session::get('menu_item') == 'espacos') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 												<a href="{{ url('') }}" class="menu-link">
 													<i class="menu-bullet menu-bullet-line">
 														<span></span>
@@ -321,9 +329,8 @@
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
         <script src="{{ asset('assets/js/pages/crud/datatables/basic/paginations.js') }}"></script>
         <script src="{{ asset('js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
-        <script src="{{ asset('js/pages/crud/forms/validation/form-controls.js') }}"></script>
         <script src="{{ asset('js/custom.js') }}"></script>
-        <script src="{{ asset('js/app.js') }}"></script>
+
         @yield('scripts')
 	</body>
 </html>
