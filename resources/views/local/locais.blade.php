@@ -16,6 +16,7 @@
                     <thead>
                     <tr>
                         <th>Código</th>
+                        <th>Estado</th>
                         <th>Local</th>
                         <th>Ações</th>
                     </tr>
@@ -50,6 +51,7 @@
                 },
                 "columns": [
                     { data: "codigo" },
+                    { data: "estado" },
                     { data: "local" },
                     { data: "acoes" },
                 ]

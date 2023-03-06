@@ -14,4 +14,9 @@ class Local extends Model
     protected $fillable = [];
 
     public $timestamps = false;
+
+    public function estado()
+    {
+        return $this->hasOne(Estado::class, 'cd_estado_est', 'cd_estado_est');
+    }
 }

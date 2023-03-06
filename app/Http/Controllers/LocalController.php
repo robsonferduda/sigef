@@ -37,6 +37,9 @@ class LocalController extends Controller
                 ->addColumn('codigo', function ($local) {
                     return $local->cd_local_prova_lop;
                 })
+                ->addColumn('estado', function ($local) {
+                    return $local->estado->nm_estado_est;
+                })
                 ->addColumn('local', function ($local) {
                     return $local->nm_local_prova_lop;
                 })
