@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contato;
 use App\Models\Local;
 use App\Models\RedeEnsino;
 use App\Models\Setor;
@@ -85,13 +86,25 @@ class SetorController extends Controller
 
     public function salvar(Request $request)
     {
-        Setor::create([
+        $setor = Setor::create([
             'cd_local_prova_lop' => $request->local,
             'cd_rede_ensino_ree' => $request->rede,
             'nm_abrev_setor_set' => $request->nome,
             'nm_setor_set' => $request->nome_abrev
         ]);
 
+        if($setor) {
+            if(isset($request->contato)) {
+                foreach ($request->contato as $contato) {
+                    Contato::create([
+                        'nm_contato_con' => $contato['nome_contato'],
+                        'dc_email_con' => $contato['email_contato'],
+                        'nu_fone_con' => $contato['telefone_contato'],
+                        'cd_setor_set' => $setor->cd_setor_set
+                    ]);
+                }
+            }
+        }
         return redirect('setores');
     }
 
@@ -105,16 +118,30 @@ class SetorController extends Controller
         $locais = Local::orderBy('nm_local_prova_lop')->get();
         $redes  = RedeEnsino::orderBy('nm_rede_ensino_ree')->get();
 
-        $setor = Setor::find($setor);
+        $setor = Setor::with(['contatos'])->find($setor);
 
         if($request->post()) {
             $setor->update([
                 'cd_local_prova_lop' => $request->local,
                 'cd_rede_ensino_ree' => $request->rede,
-                'nm_abrev_setor_set' => $request->nome,
-                'nm_setor_set' => $request->nome_abrev
+                'nm_abrev_setor_set' => $request->nome_abrev,
+                'nm_setor_set' => $request->nome
             ]);
 
+            if(isset($setor->contatos)) {
+                $setor->contatos()->delete();
+            }
+
+            if(isset($request->contato)) {
+                foreach ($request->contato as $contato) {
+                    Contato::create([
+                        'nm_contato_con' => empty($contato['nome_contato']) ? 'Não Informado' : $contato['nome_contato'],
+                        'dc_email_con' => empty($contato['email_contato']) ? null : $contato['email_contato'],
+                        'nu_fone_con' => empty($contato['telefone_contato']) ? null : $contato['telefone_contato'],
+                        'cd_setor_set' => $setor->cd_setor_set
+                    ]);
+                }
+            }
             return redirect('setores');
         }
 

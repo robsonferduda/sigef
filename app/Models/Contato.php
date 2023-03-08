@@ -11,7 +11,7 @@ class Contato extends Model
     protected $table = 'espaco_fisico.contato_con';
     protected $primaryKey = 'cd_contato_con';
 
-    protected $fillable = [];
+    protected $fillable = ['cd_setor_set', 'nm_contato_con', 'dc_email_con', 'nu_fone_con'];
 
     public $timestamps = false;
 }

@@ -37,7 +37,11 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            $('#kt_datatable').on("click", '[data-toggle="popover"]', function (){ $(this).popover({}) });
+            $('#kt_datatable').on("click", '[data-toggle="popover"]', function (){
+                if ($(this).prop('popShown') == undefined) {
+                    $(this).prop('popShown', true).popover('show');
+                }
+            });
 
             //$('[data-toggle="popover"]').on('popover', function (){ });
             var table = $('#kt_datatable').DataTable({
