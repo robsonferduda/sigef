@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Local;
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
 
@@ -62,6 +63,20 @@ class LocalController extends Controller
         $breadcrumb = $this->breadcrumb;
 
         return view('local.novo', compact('breadcrumb'));
+    }
+
+    public function destroy($id)
+    {
+        $local = Local::find($id);
+
+        if($local->setores->isEmpty()){
+            $local->delete();
+            Flash::success('<i class="fas fa-check text-white mr-2"></i> Local excluído com sucesso.');
+        }else{
+            Flash::warning('<i class="fas fa-exclamation text-white mr-2"></i> Não é possível excluir este local, ele possui setores vinculados.');
+        }
+        
+        return redirect('locais')->withInput();
     }
 
 }

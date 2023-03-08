@@ -19,4 +19,9 @@ class Local extends Model
     {
         return $this->hasOne(Estado::class, 'cd_estado_est', 'cd_estado_est');
     }
+
+    public function setores()
+    {
+        return $this->hasMany(Setor::class, 'cd_local_prova_lop', 'cd_local_prova_lop');
+    }
 }
