@@ -45,7 +45,7 @@ class LocalController extends Controller
                 })
                 ->addColumn('acoes', function ($local) {
                     return '<button class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-sm btn-clean btn-icon" title="Excluir"><i class="fas fa-trash"></i></button>';
+                            <button class="btn btn-sm btn-clean btn-icon btn-excluir" title="Excluir" id="'.$local->cd_local_prova_lop.'"><i class="fas fa-trash"></i></button>';
                 })
                 ->rawColumns(['acoes'])
                 ->make(true);
