@@ -54,7 +54,7 @@
                         <th>Monitoramento?</th>
                         <th>Estacionamento?</th>
                         <th>Wifi?</th>
-                        <th>Ações</th>
+                        <th class="box-btn-acoes-col2">Ações</th>
                     </tr>
                     </thead>
                     <tbody>

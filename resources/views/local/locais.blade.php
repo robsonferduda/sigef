@@ -12,12 +12,16 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="col-md-12">
+                    @include('layouts.mensagens')
+                </div>
                 <table class="table table-separate table-head-custom table-checkable dataTable no-footer" id="kt_datatable">
                     <thead>
                     <tr>
-                        <th>Código</th>
+                        <th class="col col-1 text-center">Código</th>
+                        <th>Estado</th>
                         <th>Local</th>
-                        <th>Ações</th>
+                        <th class="box-btn-acoes-col2">Ações</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,7 +53,8 @@
                     }
                 },
                 "columns": [
-                    { data: "codigo" },
+                    { data: "codigo", className: "center" },
+                    { data: "estado" },
                     { data: "local" },
                     { data: "acoes" },
                 ]

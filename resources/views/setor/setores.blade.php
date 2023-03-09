@@ -61,7 +61,7 @@
                         <th>Setor</th>
                         <th>Local</th>
                         <th>Rede de Ensino</th>
-                        <th>Ações</th>
+                        <th class="box-btn-acoes">Ações</th>
                     </tr>
                     </thead>
                     <tbody>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Local;
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
 
@@ -37,12 +38,15 @@ class LocalController extends Controller
                 ->addColumn('codigo', function ($local) {
                     return $local->cd_local_prova_lop;
                 })
+                ->addColumn('estado', function ($local) {
+                    return $local->estado->nm_estado_est;
+                })
                 ->addColumn('local', function ($local) {
                     return $local->nm_local_prova_lop;
                 })
                 ->addColumn('acoes', function ($local) {
                     return '<button class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-sm btn-clean btn-icon" title="Excluir"><i class="fas fa-trash"></i></button>';
+                            <button class="btn btn-sm btn-clean btn-icon btn-excluir" title="Excluir" id="'.$local->cd_local_prova_lop.'"><i class="fas fa-trash"></i></button>';
                 })
                 ->rawColumns(['acoes'])
                 ->make(true);
@@ -59,6 +63,20 @@ class LocalController extends Controller
         $breadcrumb = $this->breadcrumb;
 
         return view('local.novo', compact('breadcrumb'));
+    }
+
+    public function destroy($id)
+    {
+        $local = Local::find($id);
+
+        if($local->setores->isEmpty()){
+            $local->delete();
+            Flash::success('<i class="fas fa-check text-white mr-2"></i> Local excluído com sucesso.');
+        }else{
+            Flash::warning('<i class="fas fa-exclamation text-white mr-2"></i> Não é possível excluir este local, ele possui setores vinculados.');
+        }
+        
+        return redirect('locais')->withInput();
     }
 
 }

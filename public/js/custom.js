@@ -2,12 +2,10 @@ var host =  $('meta[name="base-url"]').attr('content');
 var localGlobal = '';
 var setorGlobal = '';
 
-$(".cpf").mask("00000000000");
-$(".inscricao").mask("0000000");
+$(document).on('click', '.btn-excluir', function(e) {
 
-$(".btn-excluir").click(function(e) {
-    e.preventDefault();
-    var form = $(this).parents('form');
+    id = $(this).attr("id");
+
     Swal.fire({
         title: "Tem certeza que deseja excluir esse registro?",
         text: "Essa operação não pode ser revertida",
@@ -18,7 +16,8 @@ $(".btn-excluir").click(function(e) {
         confirmButtonText: '<i class="fa fa-check text-white"></i> Sim, excluir'
     }).then(function(result) {
         if (result.value) {
-            form.submit();
+            var url = host+'/local/'+id+'/excluir';
+            location = url;
         }
     });
 });
