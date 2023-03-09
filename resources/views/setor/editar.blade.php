@@ -17,73 +17,73 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group col-sm-12">
-                                <label>Código do Setor</label>
-                                <input type="number" name="codigo" value="{{ $setor->nu_setor_set }}"
-                                       class="form-control" placeholder="Código do Setor"/>
-                            </div>
-                            <div class="form-group col-sm-12">
-                                <label>Nome do Setor</label>
-                                <input type="text" name="nome" value="{{ $setor->nm_setor_set }}" class="form-control"
-                                       placeholder="Nome do Setor"/>
-                            </div>
-                            <div class="form-group col-sm-12">
-                                <label>Nome Abreviado do Setor</label>
-                                <input type="text" name="nome_abrev" value="{{ $setor->nm_abrev_setor_set }}"
-                                       class="form-control" placeholder="Nome Abreviado do Setor"/>
-                            </div>
-                            <div class="form-group col-sm-12">
-                                <label for="select2">Local</label>
-                                <select name="local" class="form-control select2 select2-hidden-accessible"
-                                        style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                    <option value="">Selecione o Local</option>
-                                    @foreach($locais as $local)
-                                        <option
-                                            {!! $local->cd_local_prova_lop == $setor->cd_local_prova_lop ? 'selected' : '' !!} value="{{ $local->cd_local_prova_lop }}">{{ $local->cd_local_prova_lop }}
-                                            - {{ $local->nm_local_prova_lop }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-sm-12">
-                                <label for="select2">Rede de Ensino</label>
-                                <select name="rede" class="form-control select2 select2-hidden-accessible"
-                                        style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                    <option value="">Selecione a Rede de Ensino</option>
-                                    @foreach($redes as $rede)
-                                        <option
-                                            {!! $rede->cd_rede_ensino_ree == $setor->cd_rede_ensino_ree ? 'selected' : '' !!} value="{{ $rede->cd_rede_ensino_ree }}">{{ $rede->nm_rede_ensino_ree }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="form-group col-sm-6">
+                            <label for="select2">Local</label>
+                            <select name="local" class="form-control select2 select2-hidden-accessible"
+                                    style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option value="">Selecione o Local</option>
+                                @foreach($locais as $local)
+                                    <option
+                                        {!! $local->cd_local_prova_lop == $setor->cd_local_prova_lop ? 'selected' : '' !!} value="{{ $local->cd_local_prova_lop }}">{{ $local->cd_local_prova_lop }}
+                                        - {{ $local->nm_local_prova_lop }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="form-group col-sm-6">
+                            <label for="select2">Rede de Ensino</label>
+                            <select name="rede" class="form-control select2 select2-hidden-accessible"
+                                    style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option value="">Selecione a Rede de Ensino</option>
+                                @foreach($redes as $rede)
+                                    <option
+                                        {!! $rede->cd_rede_ensino_ree == $setor->cd_rede_ensino_ree ? 'selected' : '' !!} value="{{ $rede->cd_rede_ensino_ree }}">{{ $rede->nm_rede_ensino_ree }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-2 col-md-2 col-lg-2">
+                            <label>Código do Setor</label>
+                            <input type="number" name="codigo" value="{{ $setor->nu_setor_set }}" class="form-control" placeholder="Código do Setor"/>
+                        </div>
+                        <div class="form-group col-sm-5 col-md-5 col-lg-5">
+                            <label>Nome do Setor</label>
+                            <input type="text" name="nome" value="{{ $setor->nm_setor_set }}" class="form-control" placeholder="Nome do Setor"/>
+                        </div>
+                        <div class="form-group col-sm-5 col-md-5 col-lg-5">
+                            <label>Nome Abreviado do Setor</label>
+                            <input type="text" name="nome_abrev" value="{{ $setor->nm_abrev_setor_set }}" class="form-control" placeholder="Nome Abreviado do Setor"/>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-lg-12">
+                            <p><i class="fas fa-book text-dark"></i> Contatos do Setor</p>                              
+                        </div>
+                        <div class="col-lg-12">
                             <div id="kt_repeater_1">
                                 <div class="row" id="kt_repeater_1">
                                     <div data-repeater-list="contato" class="col-lg-10">
                                         @if(count($setor->contatos) == 0)
                                             <div data-repeater-item class="form-group row align-items-center">
-                                                <div class="form-group col-sm-12">
+                                                <div class="form-group col-sm-5">
                                                     <label>Nome do Contato:</label>
                                                     <input type="text" name="nome_contato" class="form-control"
                                                            placeholder="Nome do Contato"/>
                                                     <div class="d-md-none mb-2"></div>
                                                 </div>
-                                                <div class="form-group col-sm-12">
+                                                <div class="form-group col-sm-4">
                                                     <label>E-mail do Contato:</label>
                                                     <input type="email" name="email_contato" class="form-control"
                                                            placeholder="E-mail do Contato"/>
                                                     <div class="d-md-none mb-2"></div>
                                                 </div>
-                                                <div class="form-group col-sm-12">
+                                                <div class="form-group col-sm-2">
                                                     <label>Telefone do Contato:</label>
                                                     <input type="text" name="telefone_contato" class="form-control"
                                                            placeholder="Telefone do Contato"/>
                                                     <div class="d-md-none mb-2"></div>
                                                 </div>
-                                                <div class="form-group col-sm-12">
+                                                <div class="form-group col-sm-1">
                                                     <a href="javascript:;" data-repeater-delete=""
-                                                       class="btn btn-sm font-weight-bolder btn-light-danger">
+                                                       class="btn btn-sm font-weight-bolder btn-light-danger mt-6">
                                                         <i class="la la-trash-o"></i>Excluir
                                                     </a>
                                                 </div>
@@ -91,30 +91,30 @@
                                         @else
                                             @foreach($setor->contatos as $contato)
                                                 <div data-repeater-item class="form-group row align-items-center">
-                                                    <div class="form-group col-sm-12">
+                                                    <div class="form-group col-sm-5">
                                                         <label>Nome do Contato:</label>
                                                         <input type="text" name="nome_contato"
                                                                value="{{ $contato->nm_contato_con }}"
                                                                class="form-control" placeholder="Nome do Contato"/>
                                                         <div class="d-md-none mb-2"></div>
                                                     </div>
-                                                    <div class="form-group col-sm-12">
+                                                    <div class="form-group col-sm-4">
                                                         <label>E-mail do Contato:</label>
                                                         <input type="email" name="email_contato"
                                                                value="{{ $contato->dc_email_con }}" class="form-control"
                                                                placeholder="E-mail do Contato"/>
                                                         <div class="d-md-none mb-2"></div>
                                                     </div>
-                                                    <div class="form-group col-sm-12">
+                                                    <div class="form-group col-sm-2">
                                                         <label>Telefone do Contato:</label>
                                                         <input type="text" name="telefone_contato"
                                                                value="{{ $contato->nu_fone_con }}" class="form-control"
                                                                placeholder="Telefone do Contato"/>
                                                         <div class="d-md-none mb-2"></div>
                                                     </div>
-                                                    <div class="form-group col-sm-12">
+                                                    <div class="form-group col-sm-1">
                                                         <a href="javascript:;" data-repeater-delete=""
-                                                           class="btn btn-sm font-weight-bolder btn-light-danger">
+                                                           class="btn btn-sm font-weight-bolder btn-light-danger mt-6">
                                                             <i class="la la-trash-o"></i>Excluir
                                                         </a>
                                                     </div>
@@ -132,16 +132,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                            <a href="{{ url('setores') }}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-light-success mr-2"><i class="fas fa-save"></i> Salvar</button>
+                    <a href="{{ url('setores') }}" class="btn btn-light-danger"><i class="fas fa-times"></i> Cancelar</a>
                 </div>
             </form>
         </div>
