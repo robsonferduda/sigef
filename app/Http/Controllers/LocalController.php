@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils;
+use App\Models\Estado;
 use App\Models\Local;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
@@ -62,7 +64,35 @@ class LocalController extends Controller
 
         $breadcrumb = $this->breadcrumb;
 
-        return view('local.novo', compact('breadcrumb'));
+        $estados = Estado::all();
+        return view('local.novo', compact('breadcrumb','estados'));
+    }
+
+    public function store(Request $request)
+    {
+        $local = Local::find($request->cd_local_prova_lop);
+
+        if($local){
+            Flash::warning("Código de local já cadastrado");
+            return redirect('local/novo')->withInput();
+        }
+
+        try {
+            
+            $local = Local::create($request->all());
+            Flash::success("Dados inseridos com sucesso");
+            return redirect('locais')->withInput();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
+            
+        return redirect('local/novo')->withInput();
     }
 
     public function destroy($id)

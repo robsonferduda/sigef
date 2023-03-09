@@ -11,7 +11,7 @@ class Local extends Model
     protected $table = 'espaco_fisico.local_prova_lop';
     protected $primaryKey = 'cd_local_prova_lop';
 
-    protected $fillable = [];
+    protected $fillable = ['cd_estado_est', 'cd_local_prova_lop', 'nm_local_prova_lop'];
 
     public $timestamps = false;
 

@@ -329,8 +329,8 @@
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
         <script src="{{ asset('assets/js/pages/crud/datatables/basic/paginations.js') }}"></script>
         <script src="{{ asset('js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
-        <script src="{{ asset('js/custom.js') }}"></script>
-
+		<script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
+		<script src="{{ asset('js/custom.js') }}"></script>
         @yield('scripts')
 	</body>
 </html>
