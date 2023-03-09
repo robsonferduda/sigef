@@ -32,13 +32,37 @@ class SetorController extends Controller
         Session::put('menu_item','setores');
         $breadcrumb = $this->breadcrumb;
 
+        $redes  = RedeEnsino::orderBy('nm_rede_ensino_ree')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
+
         if($request->ajax()) {
 
-            $setores = Setor::with(['local', 'redeEnsino', 'contatos'])->orderBy('nm_setor_set')->get();
+            $nome  = $request->nome;
+            $local = $request->local;
+            $rede  = $request->rede;
+
+            $setores = Setor::with(['local', 'redeEnsino', 'contatos'])
+                ->when($nome, function ($query) use ($nome) {
+
+                    $query->where(function ($query) use ($nome){
+                        $query->where('nm_abrev_setor_set', 'ilike', "%$nome%")
+                            ->orWhere('nm_setor_set', 'ilike', "%$nome%");
+                    });
+                })
+                ->when($local, function ($query) use ($local) {
+                    return $query->where('cd_local_prova_lop', $local);
+                })
+                ->when($rede, function ($query) use ($rede) {
+                    return $query->where('cd_rede_ensino_ree', $rede);
+                })
+                ->orderBy('nm_setor_set')->get();
 
             return DataTables::of($setores)
                 ->addColumn('codigo', function ($setor) {
                     return $setor->cd_setor_set;
+                })
+                ->addColumn('codigo_unico', function ($setor) {
+                    return $setor->nu_setor_set;
                 })
                 ->addColumn('local', function ($setor) {
                     return $setor->local->nm_local_prova_lop;
@@ -68,7 +92,7 @@ class SetorController extends Controller
                 ->make(true);
         }
 
-        return view('setor.setores', compact('breadcrumb'));
+        return view('setor.setores', compact('breadcrumb', 'redes', 'locais'));
     }
 
     public function novo(Request $request)
@@ -89,17 +113,18 @@ class SetorController extends Controller
         $setor = Setor::create([
             'cd_local_prova_lop' => $request->local,
             'cd_rede_ensino_ree' => $request->rede,
-            'nm_abrev_setor_set' => $request->nome,
-            'nm_setor_set' => $request->nome_abrev
+            'nm_setor_set' => $request->nome,
+            'nm_abrev_setor_set' => $request->nome_abrev,
+            'nu_setor_set' => $request->codigo
         ]);
 
         if($setor) {
             if(isset($request->contato)) {
                 foreach ($request->contato as $contato) {
                     Contato::create([
-                        'nm_contato_con' => $contato['nome_contato'],
-                        'dc_email_con' => $contato['email_contato'],
-                        'nu_fone_con' => $contato['telefone_contato'],
+                        'nm_contato_con' => empty($contato['nome_contato']) ? 'Não Informado' : $contato['nome_contato'],
+                        'dc_email_con' => empty($contato['email_contato']) ? null : $contato['email_contato'],
+                        'nu_fone_con' => empty($contato['telefone_contato']) ? null : $contato['telefone_contato'],
                         'cd_setor_set' => $setor->cd_setor_set
                     ]);
                 }
@@ -125,7 +150,8 @@ class SetorController extends Controller
                 'cd_local_prova_lop' => $request->local,
                 'cd_rede_ensino_ree' => $request->rede,
                 'nm_abrev_setor_set' => $request->nome_abrev,
-                'nm_setor_set' => $request->nome
+                'nm_setor_set' => $request->nome,
+                'nu_setor_set' => $request->codigo
             ]);
 
             if(isset($setor->contatos)) {

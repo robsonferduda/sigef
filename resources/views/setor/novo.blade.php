@@ -18,6 +18,10 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group col-sm-12">
+                                <label>Código do Setor</label>
+                                <input type="number" name="codigo" class="form-control" placeholder="Código do Setor"/>
+                            </div>
+                            <div class="form-group col-sm-12">
                                 <label>Nome do Setor</label>
                                 <input type="text" name="nome" class="form-control" placeholder="Nome do Setor"/>
                             </div>
@@ -104,9 +108,6 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/crud/forms/widgets/form-repeater.js') }}"></script>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('.select2').select2({
@@ -117,6 +118,13 @@
                 document.getElementById('form_bloco'),
                 {
                     fields: {
+                        codigo: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'O campo "Código do Seto" é obrigatório.'
+                                }
+                            }
+                        },
                         nome: {
                             validators: {
                                 notEmpty: {
