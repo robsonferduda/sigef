@@ -19,6 +19,7 @@ Route::get('/', 'HomeController@index');
 
 Route::get('locais','LocalController@listar');
 Route::get('local/novo','LocalController@novo');
+Route::get('local/{id}/editar','LocalController@editar');
 Route::get('local/{id}/excluir','LocalController@destroy');
 Route::resource('local','LocalController');
 

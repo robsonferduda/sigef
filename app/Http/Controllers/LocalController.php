@@ -47,7 +47,7 @@ class LocalController extends Controller
                     return $local->nm_local_prova_lop;
                 })
                 ->addColumn('acoes', function ($local) {
-                    return '<button class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
+                    return '<a class="btn btn-sm btn-clean btn-icon" title="Editar" href="local/'.$local->cd_local_prova_lop.'/editar"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-clean btn-icon btn-excluir" title="Excluir" id="'.$local->cd_local_prova_lop.'"><i class="fas fa-trash"></i></button>';
                 })
                 ->rawColumns(['acoes'])
@@ -66,6 +66,18 @@ class LocalController extends Controller
 
         $estados = Estado::all();
         return view('local.novo', compact('breadcrumb','estados'));
+    }
+
+    public function editar($id)
+    {
+        Session::put('menu_item','locais');
+
+        $breadcrumb = $this->breadcrumb;
+
+        $estados = Estado::all();
+        $local = Local::find($id);
+
+        return view('local.editar', compact('breadcrumb','estados','local'));
     }
 
     public function store(Request $request)
@@ -93,6 +105,27 @@ class LocalController extends Controller
         }
             
         return redirect('local/novo')->withInput();
+    }
+
+    public function update(Request $request, Local $local)
+    {
+        
+        try {
+            
+            $local->update($request->all());
+            Flash::success("Dados atualizados com sucesso");
+            return redirect('locais')->withInput();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
+            
+        return redirect()->back()->withInput();
     }
 
     public function destroy($id)
