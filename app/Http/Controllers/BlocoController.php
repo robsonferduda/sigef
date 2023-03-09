@@ -6,6 +6,7 @@ use App\Models\Bloco;
 use App\Models\Setor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use phpDocumentor\Reflection\Types\Boolean;
 use Yajra\DataTables\DataTables;
 
 class BlocoController extends Controller
@@ -36,6 +37,15 @@ class BlocoController extends Controller
 
             $nome  = $request->nome;
             $setor = $request->setor;
+            $muro =  filter_var($request->muro, FILTER_VALIDATE_BOOLEAN);
+            $guarita =  filter_var($request->guarita, FILTER_VALIDATE_BOOLEAN);
+            $elevador =  filter_var($request->elevador, FILTER_VALIDATE_BOOLEAN);
+            $portao =  filter_var($request->portao, FILTER_VALIDATE_BOOLEAN);
+            $rampa =  filter_var($request->rampa, FILTER_VALIDATE_BOOLEAN);
+            $vigilancia =  filter_var($request->vigilancia, FILTER_VALIDATE_BOOLEAN);
+            $monitoramento =  filter_var($request->monitoramento, FILTER_VALIDATE_BOOLEAN);
+            $estacionamento =  filter_var($request->estacionamento, FILTER_VALIDATE_BOOLEAN);
+            $wifi = filter_var($request->wifi, FILTER_VALIDATE_BOOLEAN);
 
             $blocos = Bloco::with(['setor'])
                 ->when($nome, function ($query) use ($nome) {
@@ -43,6 +53,33 @@ class BlocoController extends Controller
                 })
                 ->when($setor, function ($query) use ($setor) {
                     return $query->where('cd_setor_set', $setor);
+                })
+                ->when($muro, function ($query) use ($muro) {
+                    return $query->where('fl_muro_bls', $muro);
+                })
+                ->when($guarita, function ($query) use ($guarita) {
+                    return $query->where('fl_guarita_bls', $guarita);
+                })
+                ->when($elevador, function ($query) use ($elevador) {
+                    return $query->where('fl_elevador_bls', $elevador);
+                })
+                ->when($portao, function ($query) use ($portao) {
+                    return $query->where('fl_portao_bls', $portao);
+                })
+                ->when($rampa, function ($query) use ($rampa) {
+                    return $query->where('fl_rampa_bls', $rampa);
+                })
+                ->when($vigilancia, function ($query) use ($vigilancia) {
+                    return $query->where('fl_vigilancia_bls', $vigilancia);
+                })
+                ->when($monitoramento, function ($query) use ($monitoramento) {
+                    return $query->where('fl_monitoramento_bls', $monitoramento);
+                })
+                ->when($estacionamento, function ($query) use ($estacionamento) {
+                    return $query->where('fl_estacionamento_bls', $estacionamento);
+                })
+                ->when($wifi, function ($query) use ($wifi) {
+                    return $query->where('fl_wifi_bls', $wifi);
                 })
                 ->orderBy('nm_bloco_bls')->get();
 

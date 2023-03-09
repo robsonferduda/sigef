@@ -29,6 +29,56 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-4">
+                                    <br>
+                                    <div class="checkbox-inline">
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="muro"/>
+                                            <span></span>
+                                            Muro
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="guarita"/>
+                                            <span></span>
+                                            Guarita
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="elevador"/>
+                                            <span></span>
+                                            Elevador
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="portao"/>
+                                            <span></span>
+                                            Portão
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="rampa"/>
+                                            <span></span>
+                                            Rampa
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="vigilancia"/>
+                                            <span></span>
+                                            Vigilância
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="monitoramento"/>
+                                            <span></span>
+                                            Monitoramento
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="estacionamento"/>
+                                            <span></span>
+                                            Estacionamento
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox"  name="wifi"/>
+                                            <span></span>
+                                            Wifi
+                                        </label>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -91,7 +141,16 @@
                     "data": function (d) {
                         d._token   =  "{{csrf_token()}}",
                         d.nome     = $('input[name="nome_bloco"]').val(),
-                        d.setor    = $('select[name="setor"]').val()
+                        d.setor    = $('select[name="setor"]').val(),
+                        d.muro = $('input[name="muro"]').is(":checked"),
+                        d.guarita = $('input[name="guarita"]').is(":checked"),
+                        d.elevador = $('input[name="elevador"]').is(":checked"),
+                        d.portao = $('input[name="portao"]').is(":checked"),
+                        d.rampa = $('input[name="rampa"]').is(":checked"),
+                        d.vigilancia = $('input[name="vigilancia"]').is(":checked"),
+                        d.monitoramento = $('input[name="monitoramento"]').is(":checked"),
+                        d.estacionamento = $('input[name="estacionamento"]').is(":checked"),
+                        d.wifi = $('input[name="wifi"]').is(":checked")
                     }
                 },
                 "columns": [
