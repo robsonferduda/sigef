@@ -11,7 +11,7 @@ class Setor extends Model
     protected $table = 'espaco_fisico.setor_set';
     protected $primaryKey = 'cd_setor_set';
 
-    protected $fillable = ['cd_local_prova_lop', 'nm_abrev_setor_set', 'nm_setor_set', 'cd_rede_ensino_ree'];
+    protected $fillable = ['cd_local_prova_lop', 'nm_abrev_setor_set', 'nm_setor_set', 'cd_rede_ensino_ree', 'nu_setor_set'];
 
     public $timestamps = false;
 

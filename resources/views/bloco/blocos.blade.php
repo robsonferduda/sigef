@@ -12,6 +12,32 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="form w-100">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>Nome do Bloco</label>
+                                    <input type="text" name="nome_bloco" id="nome" class="form-control" placeholder="Nome ou parte do nome"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="select2">Setor</label>
+                                    <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="select2">
+                                        <option value="">Selecione o setor</option>
+                                        @foreach($setores as $setor)
+                                            <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer center">
+                            <button type="button" class="btn btn-primary mr-2 btn-buscar"><i class="fa fa-search"></i> Buscar</button>
+                            <button type="button" class="btn btn-warning mr-2 btn-limpar"><i class="fa fa-broom"></i> Limpar</button>
+                        </div>
+                    </div>
+                </div>
                 <table class="table table-separate table-head-custom table-checkable dataTable no-footer" id="kt_datatable">
                     <thead>
                     <tr>
@@ -45,6 +71,10 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            $('.select2').select2({
+                dropdownPosition: 'below',
+            });
+
             $('#kt_datatable').on("click", '[data-toggle="popover"]', function (){ $(this).popover({}) });
 
             //$('[data-toggle="popover"]').on('popover', function (){ });
@@ -59,7 +89,9 @@
                     "dataType": "json",
                     "type": "GET",
                     "data": function (d) {
-
+                        d._token   =  "{{csrf_token()}}",
+                        d.nome     = $('input[name="nome_bloco"]').val(),
+                        d.setor    = $('select[name="setor"]').val()
                     }
                 },
                 "columns": [
@@ -79,6 +111,17 @@
                     { data: "acoes" },
                 ]
             });
+
+            $('.btn-limpar').click(function (){
+                $('input[name="nome_bloco"]').val('');
+                $('select[name="setor"]').val('').trigger('change');
+
+                table.draw();
+            })
+
+            $('.btn-buscar').click(function (){
+                table.draw();
+            })
         });
     </script>
 @endsection

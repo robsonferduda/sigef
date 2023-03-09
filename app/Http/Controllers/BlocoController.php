@@ -30,9 +30,21 @@ class BlocoController extends Controller
         Session::put('menu_item','blocos');
         $breadcrumb = $this->breadcrumb;
 
+        $setores = Setor::orderBy('nm_abrev_setor_set')->get();
+
         if($request->ajax()) {
 
-            $blocos = Bloco::with(['setor'])->orderBy('nm_bloco_bls')->get();
+            $nome  = $request->nome;
+            $setor = $request->setor;
+
+            $blocos = Bloco::with(['setor'])
+                ->when($nome, function ($query) use ($nome) {
+                   return $query->where('nm_bloco_bls', 'ilike', "%$nome%");
+                })
+                ->when($setor, function ($query) use ($setor) {
+                    return $query->where('cd_setor_set', $setor);
+                })
+                ->orderBy('nm_bloco_bls')->get();
 
             return DataTables::of($blocos)
                 ->addColumn('codigo', function ($bloco) {
@@ -83,7 +95,7 @@ class BlocoController extends Controller
                 ->make(true);
         }
 
-        return view('bloco.blocos', compact('breadcrumb'));
+        return view('bloco.blocos', compact('breadcrumb', 'setores'));
     }
 
     public function novo(Request $request)
