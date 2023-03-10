@@ -175,6 +175,16 @@
                 $('input[name="nome_bloco"]').val('');
                 $('select[name="setor"]').val('').trigger('change');
 
+                $('input[name="muro"]').prop("checked", false);
+                $('input[name="guarita"]').prop("checked", false);
+                $('input[name="elevador"]').prop("checked", false);
+                $('input[name="portao"]').prop("checked", false);
+                $('input[name="rampa"]').prop("checked", false);
+                $('input[name="vigilancia"]').prop("checked", false);
+                $('input[name="monitoramento"]').prop("checked", false);
+                $('input[name="estacionamento"]').prop("checked", false);
+                $('input[name="wifi"]').prop("checked", false);
+
                 table.draw();
             })
 
