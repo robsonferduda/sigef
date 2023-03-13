@@ -18,7 +18,7 @@ class BlocoController extends Controller
     {
         //$this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-building';
-        $this->breadcrumb['titulo'] = 'Setor';
+        $this->breadcrumb['titulo'] = 'Bloco';
         $this->breadcrumb['itens'] = array();
 
         \Session::put('menu_pai','setor');

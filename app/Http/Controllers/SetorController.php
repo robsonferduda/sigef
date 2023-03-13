@@ -74,7 +74,7 @@ class SetorController extends Controller
                     return $setor->nm_setor_set;
                 })
                 ->addColumn('rede_ensino', function ($setor) {
-                    return $setor->redeEnsino->nm_rede_ensino_ree;
+                    return (isset($setor->redeEnsino)) ? $setor->redeEnsino->nm_rede_ensino_ree : '';
                 })
                 ->addColumn('acoes', function ($setor) {
 

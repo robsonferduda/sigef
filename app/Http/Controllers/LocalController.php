@@ -32,9 +32,20 @@ class LocalController extends Controller
         Session::put('menu_item','locais');
         $breadcrumb = $this->breadcrumb;
 
+        $estados = Estado::all();
+
         if($request->ajax()) {
 
-            $locais = Local::orderBy('nm_local_prova_lop')->get();
+            $nome  = $request->nome;
+            $estado = $request->estado;
+
+            $locais = Local::orderBy('nm_local_prova_lop')
+                ->when($nome, function ($query) use ($nome) {
+                    return $query->where('nm_local_prova_lop', 'ilike', "%$nome%");
+                })
+                ->when($estado, function ($query) use ($estado) {
+                    return $query->where('cd_estado_est', $estado);
+                })->get();
 
             return DataTables::of($locais)
                 ->addColumn('codigo', function ($local) {
@@ -54,7 +65,7 @@ class LocalController extends Controller
                 ->make(true);
         }
 
-        return view('local.locais', compact('breadcrumb'));
+        return view('local.locais', compact('breadcrumb', 'estados'));
     }
 
     public function novo(Request $request)
@@ -90,7 +101,7 @@ class LocalController extends Controller
         }
 
         try {
-            
+
             $local = Local::create($request->all());
             Flash::success("Dados inseridos com sucesso");
             return redirect('locais')->withInput();
@@ -103,15 +114,15 @@ class LocalController extends Controller
 
             Flash::error("Ocorreu um erro ao inserir o registro");
         }
-            
+
         return redirect('local/novo')->withInput();
     }
 
     public function update(Request $request, Local $local)
     {
-        
+
         try {
-            
+
             $local->update($request->all());
             Flash::success("Dados atualizados com sucesso");
             return redirect('locais')->withInput();
@@ -124,7 +135,7 @@ class LocalController extends Controller
 
             Flash::error("Ocorreu um erro ao inserir o registro");
         }
-            
+
         return redirect()->back()->withInput();
     }
 
@@ -138,7 +149,7 @@ class LocalController extends Controller
         }else{
             Flash::warning('<i class="fas fa-exclamation text-white mr-2"></i> Não é possível excluir este local, ele possui setores vinculados.');
         }
-        
+
         return redirect('locais')->withInput();
     }
 

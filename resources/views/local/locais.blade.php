@@ -12,6 +12,32 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="form w-100">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>Nome do Local</label>
+                                    <input type="text" name="nome_local" id="nome" class="form-control" placeholder="Nome ou parte do nome"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="select2">Estado</label>
+                                    <select name="estado" class="form-control select2" required>
+                                        <option value="">Selecione o Estado</option>
+                                        @foreach($estados as $estado)
+                                            <option value="{{ $estado->cd_estado_est }}">{{ $estado->nm_estado_est  }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer center">
+                            <button type="button" class="btn btn-primary mr-2 btn-buscar"><i class="fa fa-search"></i> Buscar</button>
+                            <button type="button" class="btn btn-warning mr-2 btn-limpar"><i class="fa fa-broom"></i> Limpar</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     @include('layouts.mensagens')
                 </div>
@@ -19,8 +45,8 @@
                     <thead>
                     <tr>
                         <th class="col col-1 text-center">Código</th>
-                        <th>Estado</th>
                         <th>Local</th>
+                        <th>Estado</th>
                         <th class="box-btn-acoes-col2">Ações</th>
                     </tr>
                     </thead>
@@ -38,6 +64,10 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            $('.select2').select2({
+                dropdownPosition: 'below',
+            });
+
             var table = $('#kt_datatable').DataTable({
                 "processing": true,
                 "paginate": false,
@@ -49,16 +79,28 @@
                     "dataType": "json",
                     "type": "GET",
                     "data": function (d) {
-
+                        d._token   =  "{{csrf_token()}}",
+                        d.nome     = $('input[name="nome_local"]').val()
+                        d.estado    = $('select[name="estado"]').val()
                     }
                 },
                 "columns": [
                     { data: "codigo", className: "center" },
-                    { data: "estado" },
                     { data: "local" },
+                    { data: "estado" },
                     { data: "acoes" },
                 ]
             });
+
+            $('.btn-limpar').click(function (){
+                $('input[name="nome_local"]').val('');
+                $('select[name="estado"]').val('').trigger('change');
+                table.draw();
+            })
+
+            $('.btn-buscar').click(function (){
+                table.draw();
+            })
         });
     </script>
 @endsection

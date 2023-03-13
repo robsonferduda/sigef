@@ -51,7 +51,6 @@
                         </div>
                     </div>
                 </div>
-
                 <table class="table table-separate table-head-custom table-checkable dataTable no-footer" id="kt_datatable">
                     <thead>
                     <tr>
@@ -90,7 +89,7 @@
 
             var table = $('#kt_datatable').DataTable({
                 "processing": true,
-                "paginate": false,
+                "paginate": true,
                 "serverSide": true,
                 "order": [[ 2, "asc" ]],
                 "bFilter": false,
@@ -120,6 +119,7 @@
                 $('input[name="nome_setor"]').val('');
                 $('select[name="local"]').val('').trigger('change');
                 $('select[name="rede"]').val('').trigger('change');
+
                 table.draw();
             })
 
