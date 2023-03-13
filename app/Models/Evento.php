@@ -11,7 +11,7 @@ class Evento extends Model
     protected $table = 'espaco_fisico.evento_espaco_fisico_eef';
     protected $primaryKey = 'cd_evento_eef';
 
-    protected $fillable = [];
+    protected $fillable = ['cd_evento_eve','cd_tipo_evento_tie','nm_evento_eef','nu_ano_eef'];
 
     public $timestamps = false;
 

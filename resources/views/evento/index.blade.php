@@ -12,6 +12,9 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="col-md-12">
+                    @include('layouts.mensagens')
+                </div>
                 <table class="table table-separate table-head-custom table-checkable dataTable no-footer" id="kt_datatable">
                     <thead>
                         <tr>
