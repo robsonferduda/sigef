@@ -41,14 +41,16 @@ class EventoController extends Controller
     public function listar()
     {
         $eventos = Evento::all();
+
         return response()->json($eventos);
     }
 
     public function alterar(Request $request)
     {
         $evento = Evento::find($request->evento);
-        \Session::put('evento_id', $evento->cd_evento_eve);
-        \Session::put('evento_nome', $evento->nm_evento_eve);
+        \Session::put('evento_id', $evento->cd_evento_eef);
+        \Session::put('evento_cod', $evento->cd_evento_eve);
+        \Session::put('evento_nome', $evento->nm_evento_eef);
     }
 
     public function create()

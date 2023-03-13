@@ -226,7 +226,7 @@
 						<div class="container-fluid d-flex align-items-stretch justify-content-between">
 							<!--begin::Header Menu Wrapper-->
 							<div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
-								<h6 class="mt-5 py-3">Sistema de Gerenciamento do Vestibular > {{ Session::get('evento_nome') }}
+								<h6 class="mt-5 py-3">Sistema de Gerenciamento do Espaço Físico > {{ Session::get('evento_cod') }} - {{ Session::get('evento_nome') }}
                                     <span class="reload_evento" data-toggle="modal" data-target="#alterar-evento"><i class="fas fa-sync-alt text-primary"></i></span>
                                 </h6>
 							</div>
