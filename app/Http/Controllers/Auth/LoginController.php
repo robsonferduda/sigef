@@ -44,7 +44,13 @@ class LoginController extends Controller
 
             }else{
 
-                
+                $evento = (Evento::where('fl_corrente_eef',true)->first()) ?: Evento::find(Evento::max('cd_evento_eef'));
+
+                if($evento and empty(\Session::get('evento_id'))){
+                    \Session::put('evento_id', $evento->cd_evento_eef);
+                    \Session::put('evento_cod', $evento->cd_evento_eve);
+                    \Session::put('evento_nome', $evento->nm_evento_eef);
+                }
 
                 return redirect()->intended('/');
             }

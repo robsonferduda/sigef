@@ -156,6 +156,14 @@
 									<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
 								</li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('eventos') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-ticket-alt"></i>
+                                        </span>
+                                        <span class="menu-text">Eventos</span>
+                                    </a>                                   
+                                </li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('local/evento') }}"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-map-marker"></i>
@@ -218,7 +226,7 @@
 						<div class="container-fluid d-flex align-items-stretch justify-content-between">
 							<!--begin::Header Menu Wrapper-->
 							<div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
-								<h6 class="mt-5 py-3">Sistema de Gerenciamento do Vestibular > {{ Session::get('evento_nome') }}
+								<h6 class="mt-5 py-3">Sistema de Gerenciamento do Espaço Físico > {{ Session::get('evento_cod') }} - {{ Session::get('evento_nome') }}
                                     <span class="reload_evento" data-toggle="modal" data-target="#alterar-evento"><i class="fas fa-sync-alt text-primary"></i></span>
                                 </h6>
 							</div>
