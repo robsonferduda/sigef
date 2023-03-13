@@ -87,6 +87,10 @@
                                         <span class="menu-text">Dashboard</span>
                                     </a>
                                 </li>
+								<li class="menu-section">
+									<h4 class="menu-text">ESPAÇO FÍSICO</h4>
+									<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+								</li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="javascript:;"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
@@ -147,6 +151,46 @@
 										</ul>
 									</div>
 								</li>
+								<li class="menu-section">
+									<h4 class="menu-text">ESPAÇO ALOCADO</h4>
+									<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+								</li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('local/evento') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-map-marker"></i>
+                                        </span>
+                                        <span class="menu-text">Locais</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>                                   
+                                </li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('setor/evento') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-building"></i>
+                                        </span>
+                                        <span class="menu-text">Setores</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>                                   
+                                </li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('ala/evento') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-list-alt"></i>
+                                        </span>
+                                        <span class="menu-text">Alas</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>                                   
+                                </li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('grupo/evento') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-users"></i>
+                                        </span>
+                                        <span class="menu-text">Grupos</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>                                   
+                                </li>
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true">
                                     <a href="{{ route('logout') }}" class="menu-link menu-toggle" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <span class="svg-icon menu-icon">
