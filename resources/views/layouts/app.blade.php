@@ -156,6 +156,14 @@
 									<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
 								</li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('eventos') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-ticket-alt"></i>
+                                        </span>
+                                        <span class="menu-text">Eventos</span>
+                                    </a>                                   
+                                </li>
+								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('local/evento') }}"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-map-marker"></i>

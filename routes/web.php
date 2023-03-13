@@ -24,6 +24,9 @@ Route::get('bloco/novo','BlocoController@novo');
 Route::post('bloco/salvar','BlocoController@salvar');
 Route::match(['GET', 'POST'],'bloco/{bloco}/editar','BlocoController@editar');
 
+Route::get('eventos','EventoController@index');
+Route::resource('evento','EventoController');
+
 Route::get('grupo/evento','GrupoController@listar');
 
 Route::get('locais','LocalController@listar');
