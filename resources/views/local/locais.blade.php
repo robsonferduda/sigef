@@ -45,8 +45,8 @@
                     <thead>
                     <tr>
                         <th class="col col-1 text-center">Código</th>
-                        <th>Estado</th>
                         <th>Local</th>
+                        <th>Estado</th>
                         <th class="box-btn-acoes-col2">Ações</th>
                     </tr>
                     </thead>
@@ -86,8 +86,8 @@
                 },
                 "columns": [
                     { data: "codigo", className: "center" },
-                    { data: "estado" },
                     { data: "local" },
+                    { data: "estado" },
                     { data: "acoes" },
                 ]
             });

@@ -16,6 +16,19 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
+                        <div class="form-group col-sm-2">
+                            <label>Código do Setor</label>
+                            <input type="number" name="codigo" class="form-control" placeholder="Código do Setor"/>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label>Nome do Setor</label>
+                            <input type="text" name="nome" class="form-control" placeholder="Nome do Setor"/>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label>Nome Abreviado do Setor</label>
+                            <input type="text" name="nome_abrev" class="form-control"
+                                   placeholder="Nome Abreviado do Setor"/>
+                        </div>
                         <div class="form-group col-sm-6">
                             <label for="select2">Local</label>
                             <select name="local" class="form-control select2 select2-hidden-accessible"
@@ -39,23 +52,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-sm-2">
-                            <label>Código do Setor</label>
-                            <input type="number" name="codigo" class="form-control" placeholder="Código do Setor"/>
-                        </div>
-                        <div class="form-group col-sm-5">
-                            <label>Nome do Setor</label>
-                            <input type="text" name="nome" class="form-control" placeholder="Nome do Setor"/>
-                        </div>   
-                        <div class="form-group col-sm-5">
-                            <label>Nome Abreviado do Setor</label>
-                            <input type="text" name="nome_abrev" class="form-control"
-                                   placeholder="Nome Abreviado do Setor"/>
-                        </div>                            
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <p><i class="fas fa-book text-dark"></i> Contatos do Setor</p>                              
+                            <p><i class="fas fa-book text-dark"></i> Contatos do Setor</p>
                         </div>
                         <div class="col-lg-12">
                             <div id="kt_repeater_1">
@@ -142,13 +142,6 @@
                             validators: {
                                 notEmpty: {
                                     message: 'O campo "Local" é obrigatório.'
-                                }
-                            }
-                        },
-                        rede: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'O campo "Rede de Ensino" é obrigatório.'
                                 }
                             }
                         },
