@@ -140,14 +140,14 @@
                                                     <span class="menu-text">Blocos</span>
                                                 </a>
                                             </li>
-											<li class="menu-item {{ (Session::get('menu_item') == 'espacos') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-												<a href="{{ url('') }}" class="menu-link">
-													<i class="menu-bullet menu-bullet-line">
-														<span></span>
-													</i>
-													<span class="menu-text">Espaços</span>
-												</a>
-											</li>
+                                            <li class="menu-item {{ (Session::get('menu_item') == 'pavimentos') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ url('pavimentos') }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-line">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Pavimentos</span>
+                                                </a>
+                                            </li>
 										</ul>
 									</div>
 								</li>
@@ -162,7 +162,7 @@
                                         </span>
                                         <span class="menu-text">Locais</span>
                                         <i class="menu-arrow"></i>
-                                    </a>                                   
+                                    </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('setor/evento') }}"  class="menu-link menu-toggle">
@@ -171,7 +171,7 @@
                                         </span>
                                         <span class="menu-text">Setores</span>
                                         <i class="menu-arrow"></i>
-                                    </a>                                   
+                                    </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('ala/evento') }}"  class="menu-link menu-toggle">
@@ -180,7 +180,7 @@
                                         </span>
                                         <span class="menu-text">Alas</span>
                                         <i class="menu-arrow"></i>
-                                    </a>                                   
+                                    </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('grupo/evento') }}"  class="menu-link menu-toggle">
@@ -189,7 +189,7 @@
                                         </span>
                                         <span class="menu-text">Grupos</span>
                                         <i class="menu-arrow"></i>
-                                    </a>                                   
+                                    </a>
                                 </li>
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true">
                                     <a href="{{ route('logout') }}" class="menu-link menu-toggle" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

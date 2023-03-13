@@ -23,6 +23,7 @@ Route::get('blocos','BlocoController@listar');
 Route::get('bloco/novo','BlocoController@novo');
 Route::post('bloco/salvar','BlocoController@salvar');
 Route::match(['GET', 'POST'],'bloco/{bloco}/editar','BlocoController@editar');
+Route::get('blocos/setor/{setor}','BlocoController@buscarBlocosPorSetor');
 
 Route::get('grupo/evento','GrupoController@listar');
 
@@ -38,3 +39,6 @@ Route::get('setor/novo','SetorController@novo');
 Route::get('setor/evento','SetorController@setorEvento');
 Route::post('setor/salvar','SetorController@salvar');
 Route::match(['GET', 'POST'],'setor/{setor}/editar','SetorController@editar');
+
+Route::get('pavimentos','PavimentoController@listar');
+
