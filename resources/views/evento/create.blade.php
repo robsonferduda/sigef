@@ -44,7 +44,7 @@
                     </div>
                     <div class="card-footer text-center">
                         <button type="submit" class="btn btn-light-success mr-2"><i class="fas fa-save"></i> Salvar</button>
-                        <a href="{{ url('locais') }}" class="btn btn-light-danger"><i class="fas fa-times"></i> Cancelar</a>
+                        <a href="{{ url('eventos') }}" class="btn btn-light-danger"><i class="fas fa-times"></i> Cancelar</a>
                     </div>
                 </form>
             </div>

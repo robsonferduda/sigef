@@ -83,9 +83,10 @@ class EventoController extends Controller
         );        
         $breadcrumb = $this->breadcrumb;
 
+        $tipos = TipoEvento::all();
         $evento = Evento::find($id);
 
-        return view('evento/edit', compact('breadcrumb','evento'));
+        return view('evento/edit', compact('breadcrumb','evento','tipos'));
     }
 
     public function store(Request $request)
@@ -107,6 +108,26 @@ class EventoController extends Controller
         return redirect('eventos')->withInput();
     }
 
+    public function update(Request $request, Evento $evento)
+    {
+
+        try {
+
+            $evento->update($request->all());
+            Flash::success("Dados atualizados com sucesso");
+            return redirect('eventos')->withInput();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
+
+        return redirect()->back()->withInput();
+    }
 
     public function destroy($id)
     {
