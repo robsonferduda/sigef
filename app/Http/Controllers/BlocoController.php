@@ -198,4 +198,11 @@ class BlocoController extends Controller
 
         return view('bloco.editar', compact('breadcrumb', 'bloco', 'setores'));
     }
+
+    public function buscarBlocosPorSetor($setor)
+    {
+        $blocos = Bloco::where('cd_setor_set', $setor)->orderBy('nm_bloco_bls')->get();
+
+        return json_encode($blocos);
+    }
 }
