@@ -46,4 +46,7 @@ Route::post('setor/salvar','SetorController@salvar');
 Route::match(['GET', 'POST'],'setor/{setor}/editar','SetorController@editar');
 
 Route::get('pavimentos','PavimentoController@listar');
+Route::get('pavimento/novo','PavimentoController@novo');
+Route::post('pavimento/salvar','PavimentoController@salvar');
+Route::match(['GET', 'POST'],'pavimento/{pavimento}/editar','PavimentoController@editar');
 

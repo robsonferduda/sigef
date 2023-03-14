@@ -63,9 +63,12 @@ class PavimentoController extends Controller
                 ->addColumn('bloco', function ($pavimento) {
                     return $pavimento->bloco->nm_bloco_bls;
                 })
+                ->addColumn('setor', function ($pavimento) {
+                    return $pavimento->bloco->setor->nm_setor_set;
+                })
                 ->addColumn('acoes', function ($pavimento) {
 
-                    return '<a href="bloco/'.$pavimento->cd_pavimento_pav.'/editar" class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></a>
+                    return '<a href="pavimento/'.$pavimento->cd_pavimento_pav.'/editar" class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-sm btn-clean btn-icon" title="Excluir"><i class="fas fa-trash"></i></button>';
                 })
                 ->rawColumns(['setor_abrev','acoes'])
@@ -73,5 +76,52 @@ class PavimentoController extends Controller
         }
 
         return view('pavimento.pavimentos', compact('breadcrumb', 'blocos', 'setores'));
+    }
+
+    public function novo(Request $request)
+    {
+        /* Marcação de Menus */
+        Session::put('menu_item','pavimentos');
+
+        $breadcrumb = $this->breadcrumb;
+
+        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
+        $setores = Setor::orderBy('nm_setor_set')->get();
+
+        return view('pavimento.novo', compact('breadcrumb', 'blocos', 'setores'));
+    }
+
+    public function salvar(Request $request)
+    {
+        $pavimento = Pavimento::create([
+            'cd_bloco_setor_bls' => $request->bloco,
+            'nm_pavimento_pav' => $request->nome
+        ]);
+
+        return redirect('pavimentos');
+    }
+
+    public function editar(Request $request, $pavimento)
+    {
+        /* Marcação de Menus */
+        Session::put('menu_item','setores');
+
+        $breadcrumb = $this->breadcrumb;
+
+        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
+        $setores = Setor::orderBy('nm_setor_set')->get();
+
+        $pavimento = Pavimento::find($pavimento);
+
+        if($request->post()) {
+            $pavimento->update([
+                'cd_bloco_setor_bls' => $request->bloco,
+                'nm_pavimento_pav' => $request->nome
+            ]);
+
+            return redirect('pavimentos');
+        }
+
+        return view('pavimento.editar', compact('breadcrumb', 'blocos', 'setores', 'pavimento'));
     }
 }

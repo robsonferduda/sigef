@@ -8,7 +8,7 @@
                         <span class="d-block text-muted pt-2 font-size-sm">Listagem de Pavimentos</span></h3>
                 </div>
                 <div class="card-toolbar">
-                    <a href="{{ url('local/novo') }}" class="btn btn-primary font-weight-bolder"><i class="fa fa-plus"></i> Novo</a>
+                    <a href="{{ url('pavimento/novo') }}" class="btn btn-primary font-weight-bolder"><i class="fa fa-plus"></i> Novo</a>
                 </div>
             </div>
             <div class="card-body">
@@ -51,8 +51,9 @@
                     <thead>
                     <tr>
                         <th class="col col-1 text-center">Código</th>
-                        <th>Pavimento</th>
+                        <th>Setor</th>
                         <th>Bloco</th>
+                        <th>Pavimento</th>
                         <th class="box-btn-acoes-col2">Ações</th>
                     </tr>
                     </thead>
@@ -78,7 +79,7 @@
                 "processing": true,
                 "paginate": false,
                 "serverSide": true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ]],
                 "bFilter": false,
                 "ajax":{
                     "url": "{{ url('pavimentos') }}",
@@ -93,8 +94,9 @@
                 },
                 "columns": [
                     { data: "codigo", className: "center" },
-                    { data: "pavimento" },
+                    { data: "setor" },
                     { data: "bloco" },
+                    { data: "pavimento" },
                     { data: "acoes" },
                 ]
             });
