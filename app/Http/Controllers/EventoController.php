@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use App\Utils;
 use App\User;
+use App\Models\Local;
 use App\Models\Evento;
 use App\Models\TipoEvento;
 use Laracasts\Flash\Flash;
@@ -142,4 +143,49 @@ class EventoController extends Controller
 
         return redirect('eventos')->withInput();
     }
+
+    public function locais()
+    {
+        /* Marcação de Menus */
+        Session::put('menu_item','eventos');
+
+        $this->breadcrumb['icone'] = 'fas fa-map-marker';
+        $this->breadcrumb['titulo'] = 'Locais Selecionados';
+        $this->breadcrumb['itens'] = array(
+            array('descricao' => 'Dashboard', 'url' => '/'),
+            array('descricao' => 'Eventos', 'url' => 'eventos'),
+            array('descricao' => 'Locais', 'url' => 'locais'),
+            array('descricao' => 'Locais Selecionados', 'url' => '#')
+        );        
+        $breadcrumb = $this->breadcrumb;
+
+        $evento = Evento::find(10);
+        $locais_disponiveis = Local::whereNotIn('cd_local_prova_lop', $evento->locais->map->only('cd_local_prova_lop')->toArray())->orderBy('nm_local_prova_lop')->get();
+        $locais_selecionados = $evento->locais;
+
+        return view('evento/locais', compact('breadcrumb','locais_disponiveis','locais_selecionados'));
+    }
+
+    public function adicionarLocal($id)
+    {
+        $evento = Evento::find(10);
+        $local = Local::find($id);
+
+        $evento->locais()->attach($local);
+
+        Flash::success('<i class="fas fa-check text-white mr-2"></i> Local <strong>'.$local->nm_local_prova_lop.'</strong> adicionado com sucesso.');
+        return redirect('evento/locais')->withInput();
+    }
+
+    public function removerLocal($id)
+    {
+        $evento = Evento::find(10);
+        $local = Local::find($id);
+
+        $evento->locais()->detach($local);
+
+        Flash::success('<i class="fas fa-check text-white mr-2"></i> Local <strong>'.$local->nm_local_prova_lop.'</strong> removido com sucesso.');
+        return redirect('evento/locais')->withInput();
+    }
+
 }

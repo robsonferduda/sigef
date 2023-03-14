@@ -22,6 +22,6 @@ class Evento extends Model
 
     public function locais()
     {
-        return $this->hasMany(Setor::class, 'cd_local_prova_lop', 'cd_local_prova_lop');
+        return $this->belongsToMany(Local::class, 'espaco_fisico.local_evento_loe', 'cd_evento_eef', 'cd_local_prova_lop');
     }
 }

@@ -26,6 +26,10 @@ Route::match(['GET', 'POST'],'bloco/{bloco}/editar','BlocoController@editar');
 
 Route::get('eventos','EventoController@index');
 Route::get('eventos/listar','EventoController@listar');
+Route::get('evento/locais','EventoController@locais');
+Route::get('evento/local/{id}/adicionar','EventoController@adicionarLocal');
+Route::get('evento/local/{id}/remover','EventoController@removerLocal');
+Route::get('evento/locais','EventoController@locais');
 Route::post('evento/alterar','EventoController@alterar');
 Route::resource('evento','EventoController');
 
