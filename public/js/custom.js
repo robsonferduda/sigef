@@ -3,7 +3,7 @@ var localGlobal = '';
 var setorGlobal = '';
 
 
-$(".btn-excluir").click(function(e) {
+$(".btn-frm-excluir").click(function(e) {
     e.preventDefault();
     var form = $(this).parents('form');
     Swal.fire({

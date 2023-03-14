@@ -106,4 +106,19 @@ class EventoController extends Controller
 
         return redirect('eventos')->withInput();
     }
+
+
+    public function destroy($id)
+    {
+        $evento = Evento::find($id);
+
+        if($evento->locais->isEmpty()){
+            $evento->delete();
+            Flash::success('<i class="fas fa-check text-white mr-2"></i> Evento excluído com sucesso.');
+        }else{
+            Flash::warning('<i class="fas fa-exclamation text-white mr-2"></i> Não é possível excluir este evento, ele possui locais vinculados.');
+        }
+
+        return redirect('eventos')->withInput();
+    }
 }

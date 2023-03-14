@@ -19,4 +19,9 @@ class Evento extends Model
     {
         return $this->hasOne(TipoEvento::class, 'cd_tipo_evento_tie', 'cd_tipo_evento_tie');
     }
+
+    public function locais()
+    {
+        return $this->hasMany(Setor::class, 'cd_local_prova_lop', 'cd_local_prova_lop');
+    }
 }
