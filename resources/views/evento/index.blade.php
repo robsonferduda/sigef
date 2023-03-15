@@ -12,6 +12,9 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="col-md-12">
+                    @include('layouts.mensagens')
+                </div>
                 <table class="table table-separate table-head-custom table-checkable dataTable no-footer" id="kt_datatable">
                     <thead>
                         <tr>
@@ -38,7 +41,7 @@
                                     <form class="inline" style="display: inline;" action="{{ route('evento.destroy',$evento->cd_evento_eef) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-clean btn-icon btn-excluir" title="Delete">
+                                        <button type="submit" class="btn btn-sm btn-clean btn-icon btn-frm-excluir" title="Delete">
                                             <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </form> 

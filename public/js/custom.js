@@ -2,8 +2,27 @@ var host =  $('meta[name="base-url"]').attr('content');
 var localGlobal = '';
 var setorGlobal = '';
 
+$(document).on('click', '.btn-confirmar', function(e) {
+    e.preventDefault();
+    url = $(this).attr('href');
+    text = $(this).text().trim();
+ 
+    Swal.fire({
+        title: "Tem certeza que deseja excluir "+text+"?",
+        text: "Essa operação não pode ser revertida",
+        icon: "warning",
+        confirmButtonColor: '#1BC5BD',
+        showCancelButton: true,
+        cancelButtonText: '<i class="fa fa-times text-white"></i> Cancelar',
+        confirmButtonText: '<i class="fa fa-check text-white"></i> Sim, excluir'
+    }).then(function(result) {
+        if (result.value) {
+            window.location = url;
+        }
+    });
+});
 
-$(".btn-excluir").click(function(e) {
+$(".btn-frm-excluir").click(function(e) {
     e.preventDefault();
     var form = $(this).parents('form');
     Swal.fire({
