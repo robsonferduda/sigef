@@ -148,6 +148,14 @@
                                                     <span class="menu-text">Pavimentos</span>
                                                 </a>
                                             </li>
+                                            <li class="menu-item {{ (Session::get('menu_item') == 'salas') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ url('salas') }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-line">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Salas</span>
+                                                </a>
+                                            </li>
 										</ul>
 									</div>
 								</li>
@@ -161,7 +169,7 @@
                                             <i class="fas fa-ticket-alt"></i>
                                         </span>
                                         <span class="menu-text">Eventos</span>
-                                    </a>                                   
+                                    </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('local/evento') }}"  class="menu-link menu-toggle">
