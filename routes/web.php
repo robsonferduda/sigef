@@ -28,6 +28,7 @@ Route::get('blocos/setor/{setor}','BlocoController@buscarBlocosPorSetor');
 Route::get('eventos','EventoController@index');
 Route::get('eventos/listar','EventoController@listar');
 Route::get('evento/locais','EventoController@locais');
+Route::get('evento/setores','EventoController@setores');
 Route::get('evento/local/{id}/adicionar','EventoController@adicionarLocal');
 Route::get('evento/local/{id}/remover','EventoController@removerLocal');
 Route::get('evento/locais','EventoController@locais');

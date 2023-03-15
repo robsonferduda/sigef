@@ -166,6 +166,29 @@ class EventoController extends Controller
         return view('evento/locais', compact('breadcrumb','locais_disponiveis','locais_selecionados'));
     }
 
+    public function setores()
+    {
+        /* Marcação de Menus */
+        Session::put('menu_item','eventos');
+
+        $this->breadcrumb['icone'] = 'fas fa-building';
+        $this->breadcrumb['titulo'] = 'Setores Selecionados';
+        $this->breadcrumb['itens'] = array(
+            array('descricao' => 'Dashboard', 'url' => '/'),
+            array('descricao' => 'Eventos', 'url' => 'eventos'),
+            array('descricao' => 'Locais', 'url' => 'locais'),
+            array('descricao' => 'Setores', 'url' => 'setores'),
+            array('descricao' => 'Setores Selecionados', 'url' => '#')
+        );        
+        $breadcrumb = $this->breadcrumb;
+
+        $evento = Evento::find(10);
+        $locais_disponiveis = Local::whereNotIn('cd_local_prova_lop', $evento->locais->map->only('cd_local_prova_lop')->toArray())->orderBy('nm_local_prova_lop')->get();
+        $locais_selecionados = $evento->locais;
+
+        return view('evento/setores', compact('breadcrumb','locais_disponiveis','locais_selecionados'));
+    }
+
     public function adicionarLocal($id)
     {
         $evento = Evento::find(10);
