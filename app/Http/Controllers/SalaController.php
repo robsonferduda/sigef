@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bloco;
 use App\Models\Pavimento;
+use App\Models\Sala;
 use App\Models\Setor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -35,48 +36,66 @@ class SalaController extends Controller
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
         $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->get();
-        
+
         if($request->ajax()) {
 
             $nome  = $request->nome;
             $setor = $request->setor;
-            $bloco  = $request->bloco;
+            $bloco = $request->bloco;
+            $pavimento = $request->pavimento;
 
-            $pavimentos = Pavimento::when($nome, function ($query) use ($nome) {
-                return $query->where('nm_pavimento_pav', 'ilike', "%$nome%");
+            $salas = Sala::with(['tipoSala', 'tipoCarteira'])->when($nome, function ($query) use ($nome) {
+                return $query->where('nm_sala_sal', 'ilike', "%$nome%");
             })
+                ->when($pavimento, function ($query) use ($pavimento) {
+                    return $query->where('cd_pavimento_pav', $pavimento);
+                })
                 ->when($bloco, function ($query) use ($bloco) {
-                    return $query->where('cd_bloco_setor_bls', $bloco);
-                })->when($setor, function ($query) use ($setor) {
-                    $query->whereHas('bloco', function ($query) use ($setor){
-                        $query->where('cd_setor_set', $setor);
+                    $query->whereHas('pavimento', function ($query) use ($bloco){
+                       $query->where('cd_bloco_setor_bls', $bloco);
                     });
                 })
-                ->orderBy('nm_pavimento_pav')->get();
+                ->when($setor, function ($query) use ($setor) {
+                    $query->whereHas('pavimento', function ($query) use ($setor){
+                        $query->whereHas('bloco', function ($query) use ($setor){
+                            $query->where('cd_setor_set', $setor);
+                        });
+                    });
+                })
+                ->orderBy('nm_sala_sal')->get();
 
-            return DataTables::of($pavimentos)
-                ->addColumn('codigo', function ($pavimento) {
-                    return $pavimento->cd_pavimento_pav;
+            return DataTables::of($salas)
+                ->addColumn('codigo', function ($sala) {
+                    return $sala->cd_sala_sal;
                 })
-                ->addColumn('pavimento', function ($pavimento) {
-                    return $pavimento->nm_pavimento_pav;
+                ->addColumn('pavimento', function ($sala) {
+                    return $sala->pavimento->nm_pavimento_pav;
                 })
-                ->addColumn('bloco', function ($pavimento) {
-                    return $pavimento->bloco->nm_bloco_bls;
+                ->addColumn('bloco', function ($sala) {
+                    return $sala->pavimento->bloco->nm_bloco_bls;
                 })
-                ->addColumn('setor', function ($pavimento) {
-                    return $pavimento->bloco->setor->nm_setor_set;
+                ->addColumn('setor', function ($sala) {
+                    return $sala->pavimento->bloco->setor->nm_setor_set;
                 })
-                ->addColumn('acoes', function ($pavimento) {
+                ->addColumn('sala', function ($sala) {
+                    return $sala->nm_sala_sal;
+                })
+                ->addColumn('tipo_sala', function ($sala) {
+                    return $sala->tipoSala->nm_tipo_tis;
+                })
+                ->addColumn('tipo_carteira', function ($sala) {
+                    return $sala->tipoCarteira->nm_tipo_tic;
+                })
+                ->addColumn('acoes', function ($sala) {
 
-                    return '<a href="pavimento/'.$pavimento->cd_pavimento_pav.'/editar" class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></a>
+                    return '<a href="pavimento/'.$sala->cd_sala_sal.'/editar" class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-sm btn-clean btn-icon" title="Excluir"><i class="fas fa-trash"></i></button>';
                 })
                 ->rawColumns(['setor_abrev','acoes'])
                 ->make(true);
         }
 
-        return view('pavimento.pavimentos', compact('breadcrumb', 'blocos', 'setores'));
+        return view('sala.salas', compact('breadcrumb', 'blocos', 'setores', 'pavimentos'));
     }
 
     public function novo(Request $request)
