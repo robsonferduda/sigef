@@ -16,11 +16,7 @@
                     <div class="form w-100">
                         <div class="card-body">
                             <div class="form-group row">
-                                <div class="col-md-3">
-                                    <label>Nome da Sala</label>
-                                    <input type="text" name="nome_sala" id="nome" class="form-control" placeholder="Nome ou parte do nome"/>
-                                </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="select2">Setor</label>
                                     <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="setor">
                                         <option value="">Selecione o setor</option>
@@ -29,19 +25,43 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="select2">Bloco</label>
                                     <select name="bloco" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
                                         <option value="">Selecione o bloco</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="select2">Pavimento</label>
                                     <select name="pavimento" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="pavimento">
                                         <option value="">Selecione o pavimento</option>
                                     </select>
                                 </div>
 
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>Nome da Sala</label>
+                                    <input type="text" name="nome_sala" id="nome" class="form-control" placeholder="Nome ou parte do nome"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="select2">Tipo de Carteira</label>
+                                    <select name="tipo_carteira" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="tipo_carteira">
+                                        <option value="">Selecione o Tipo de Carteira</option>
+                                        @foreach($tiposCarteira as $tipo)
+                                            <option value="{{ $tipo->cd_tipo_carteira_tic }}">{{ $tipo->nm_tipo_tic }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="select2">Tipo de Sala</label>
+                                    <select name="tipo_sala" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="tipo_sala">
+                                        <option value="">Selecione o Tipo de Sala</option>
+                                        @foreach($tiposSala as $tipo)
+                                            <option value="{{ $tipo->cd_tipo_sala_tis }}">{{ $tipo->nm_tipo_tis }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer center">
@@ -63,6 +83,7 @@
                         <th>Sala</th>
                         <th>Tipo Sala</th>
                         <th>Tipo Carteira</th>
+                        <th>Nº Carteiras</th>
                         <th class="box-btn-acoes-col2">Ações</th>
                     </tr>
                     </thead>
@@ -95,11 +116,14 @@
                     "dataType": "json",
                     "type": "GET",
                     "data": function (d) {
-                        d._token   =  "{{csrf_token()}}",
-                        d.nome     =  $('input[name="nome_sala"]').val(),
-                        d.setor    = $('select[name="setor"]').val()
-                        d.bloco    = $('select[name="bloco"]').val()
-                        d.pavimento    = $('select[name="pavimento"]').val()
+                        d._token   =  "{{csrf_token()}}";
+                        d.nome     =  $('input[name="nome_sala"]').val();
+                        d.setor    = $('select[name="setor"]').val();
+                        d.bloco    = $('select[name="bloco"]').val();
+                        d.pavimento    = $('select[name="pavimento"]').val();
+                        d.pavimento    = $('select[name="pavimento"]').val();
+                        d.tipo_carteira = $('select[name="tipo_carteira"]').val();
+                        d.tipo_sala = $('select[name="tipo_sala"]').val();
                     }
                 },
                 "columns": [
@@ -110,6 +134,7 @@
                     { data: "sala" },
                     { data: "tipo_sala" },
                     { data: "tipo_carteira" },
+                    { data: "numero_carteiras" },
                     { data: "acoes" },
                 ]
             });
@@ -119,6 +144,8 @@
                 $('select[name="setor"]').val('').trigger('change');
                 $('select[name="bloco"]').val('').trigger('change');
                 $('select[name="pavimento"]').val('').trigger('change');
+                $('select[name="tipo_carteira"]').val('').trigger('change');
+                $('select[name="tipo_sala"]').val('').trigger('change');
                 table.draw();
             });
 

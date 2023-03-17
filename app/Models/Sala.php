@@ -11,7 +11,7 @@ class Sala extends Model
     protected $table = 'espaco_fisico.sala_sal';
     protected $primaryKey = 'cd_sala_sal';
 
-    protected $fillable = ['cd_tipo_sala_tis', 'nu_carteiras_sal', 'cd_tipo_carterira_tic', 'nm_sala_sal', 'cd_pavimento_pav'];
+    protected $fillable = ['cd_tipo_sala_tis', 'nu_carteiras_sal', 'cd_tipo_carteira_tic', 'nm_sala_sal', 'cd_pavimento_pav'];
 
     public $timestamps = false;
 

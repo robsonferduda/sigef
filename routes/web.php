@@ -56,4 +56,6 @@ Route::match(['GET', 'POST'],'pavimento/{pavimento}/editar','PavimentoController
 Route::get('pavimentos/bloco/{bloco}','PavimentoController@buscarPavimentosPorBloco');
 
 Route::get('salas','SalaController@listar');
-
+Route::get('sala/novo','SalaController@novo');
+Route::post('sala/salvar','SalaController@salvar');
+Route::match(['GET', 'POST'],'sala/{sala}/editar','SalaController@editar');
