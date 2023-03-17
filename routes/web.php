@@ -17,7 +17,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 
-Route::get('ala/evento','AlaController@listar');
+Route::get('alas','AlaController@index');
+Route::resource('ala','AlaController');
 
 Route::get('blocos','BlocoController@listar');
 Route::get('bloco/novo','BlocoController@novo');

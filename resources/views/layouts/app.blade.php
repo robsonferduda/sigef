@@ -188,12 +188,11 @@
                                     </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
-                                    <a href="{{ url('ala/evento') }}"  class="menu-link menu-toggle">
+                                    <a href="{{ url('alas') }}"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-list-alt"></i>
                                         </span>
                                         <span class="menu-text">Alas</span>
-                                        <i class="menu-arrow"></i>
                                     </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
