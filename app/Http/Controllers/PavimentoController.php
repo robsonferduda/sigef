@@ -124,4 +124,11 @@ class PavimentoController extends Controller
 
         return view('pavimento.editar', compact('breadcrumb', 'blocos', 'setores', 'pavimento'));
     }
+
+    public function buscarPavimentosPorBloco($bloco)
+    {
+        $pavimentos = Pavimento::where('cd_bloco_setor_bls', $bloco)->orderBy('nm_pavimento_pav')->get();
+
+        return json_encode($pavimentos);
+    }
 }

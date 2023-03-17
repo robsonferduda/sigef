@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Bloco;
 use App\Models\Pavimento;
+use App\Models\Sala;
 use App\Models\Setor;
+use App\Models\TipoCarteira;
+use App\Models\TipoSala;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -35,48 +38,79 @@ class SalaController extends Controller
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
         $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->get();
-        
+        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
+        $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
+
         if($request->ajax()) {
 
             $nome  = $request->nome;
             $setor = $request->setor;
-            $bloco  = $request->bloco;
+            $bloco = $request->bloco;
+            $pavimento = $request->pavimento;
+            $tipoSala = $request->tipo_sala;
+            $tipoCarteira = $request->tipo_carteira;
 
-            $pavimentos = Pavimento::when($nome, function ($query) use ($nome) {
-                return $query->where('nm_pavimento_pav', 'ilike', "%$nome%");
+            $salas = Sala::with(['tipoSala', 'tipoCarteira'])->when($nome, function ($query) use ($nome) {
+                return $query->where('nm_sala_sal', 'ilike', "%$nome%");
             })
+                ->when($pavimento, function ($query) use ($pavimento) {
+                    return $query->where('cd_pavimento_pav', $pavimento);
+                })
                 ->when($bloco, function ($query) use ($bloco) {
-                    return $query->where('cd_bloco_setor_bls', $bloco);
-                })->when($setor, function ($query) use ($setor) {
-                    $query->whereHas('bloco', function ($query) use ($setor){
-                        $query->where('cd_setor_set', $setor);
+                    $query->whereHas('pavimento', function ($query) use ($bloco){
+                       $query->where('cd_bloco_setor_bls', $bloco);
                     });
                 })
-                ->orderBy('nm_pavimento_pav')->get();
+                ->when($setor, function ($query) use ($setor) {
+                    $query->whereHas('pavimento', function ($query) use ($setor){
+                        $query->whereHas('bloco', function ($query) use ($setor){
+                            $query->where('cd_setor_set', $setor);
+                        });
+                    });
+                })
+                ->when($tipoSala, function ($query) use ($tipoSala) {
+                    return $query->where('cd_tipo_sala_tis', $tipoSala);
+                })
+                ->when($tipoCarteira, function ($query) use ($tipoCarteira) {
+                    return $query->where('cd_tipo_carteira_tic', $tipoCarteira);
+                })
+                ->orderBy('nm_sala_sal')->get();
 
-            return DataTables::of($pavimentos)
-                ->addColumn('codigo', function ($pavimento) {
-                    return $pavimento->cd_pavimento_pav;
+            return DataTables::of($salas)
+                ->addColumn('codigo', function ($sala) {
+                    return $sala->cd_sala_sal;
                 })
-                ->addColumn('pavimento', function ($pavimento) {
-                    return $pavimento->nm_pavimento_pav;
+                ->addColumn('pavimento', function ($sala) {
+                    return $sala->pavimento->nm_pavimento_pav;
                 })
-                ->addColumn('bloco', function ($pavimento) {
-                    return $pavimento->bloco->nm_bloco_bls;
+                ->addColumn('bloco', function ($sala) {
+                    return $sala->pavimento->bloco->nm_bloco_bls;
                 })
-                ->addColumn('setor', function ($pavimento) {
-                    return $pavimento->bloco->setor->nm_setor_set;
+                ->addColumn('setor', function ($sala) {
+                    return $sala->pavimento->bloco->setor->nm_setor_set;
                 })
-                ->addColumn('acoes', function ($pavimento) {
+                ->addColumn('sala', function ($sala) {
+                    return $sala->nm_sala_sal;
+                })
+                ->addColumn('tipo_sala', function ($sala) {
+                    return $sala->tipoSala->nm_tipo_tis;
+                })
+                ->addColumn('tipo_carteira', function ($sala) {
+                    return $sala->tipoCarteira->nm_tipo_tic;
+                })
+                ->addColumn('numero_carteiras', function ($sala) {
+                    return $sala->nu_carteiras_sal;
+                })
+                ->addColumn('acoes', function ($sala) {
 
-                    return '<a href="pavimento/'.$pavimento->cd_pavimento_pav.'/editar" class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></a>
+                    return '<a href="sala/'.$sala->cd_sala_sal.'/editar" class="btn btn-sm btn-clean btn-icon" title="Editar"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-sm btn-clean btn-icon" title="Excluir"><i class="fas fa-trash"></i></button>';
                 })
                 ->rawColumns(['setor_abrev','acoes'])
                 ->make(true);
         }
 
-        return view('pavimento.pavimentos', compact('breadcrumb', 'blocos', 'setores'));
+        return view('sala.salas', compact('breadcrumb', 'blocos', 'setores', 'pavimentos', 'tiposSala', 'tiposCarteira'));
     }
 
     public function novo(Request $request)
@@ -88,41 +122,51 @@ class SalaController extends Controller
 
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
+        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
+        $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
-        return view('pavimento.novo', compact('breadcrumb', 'blocos', 'setores'));
+        return view('sala.novo', compact('breadcrumb', 'blocos', 'setores', 'tiposSala', 'tiposCarteira'));
     }
 
     public function salvar(Request $request)
     {
-        $pavimento = Pavimento::create([
-            'cd_bloco_setor_bls' => $request->bloco,
-            'nm_pavimento_pav' => $request->nome
+        $sala = Sala::create([
+            'cd_tipo_sala_tis' => $request->tipo_sala,
+            'nu_carteiras_sal' => $request->qtd_cardeiras,
+            'cd_tipo_carteira_tic' => $request->tipo_carteira,
+            'nm_sala_sal' => $request->nome,
+            'cd_pavimento_pav' => $request->pavimento,
         ]);
 
-        return redirect('pavimentos');
+        return redirect('salas');
     }
 
-    public function editar(Request $request, $pavimento)
+    public function editar(Request $request, $sala)
     {
         /* Marcação de Menus */
-        Session::put('menu_item','setores');
+        Session::put('menu_item','salas');
 
         $breadcrumb = $this->breadcrumb;
 
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
+        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
+        $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
-        $pavimento = Pavimento::find($pavimento);
+        $sala = Sala::find($sala);
 
         if($request->post()) {
-            $pavimento->update([
-                'cd_bloco_setor_bls' => $request->bloco,
-                'nm_pavimento_pav' => $request->nome
+            $sala->update([
+                'cd_tipo_sala_tis' => $request->tipo_sala,
+                'nu_carteiras_sal' => $request->qtd_cardeiras,
+                'cd_tipo_carteira_tic' => $request->tipo_carteira,
+                'nm_sala_sal' => $request->nome,
+                'cd_pavimento_pav' => $request->pavimento,
             ]);
 
-            return redirect('pavimentos');
+            return redirect('salas');
         }
 
-        return view('pavimento.editar', compact('breadcrumb', 'blocos', 'setores', 'pavimento'));
+        return view('sala.editar', compact('breadcrumb', 'blocos', 'setores', 'sala', 'tiposSala', 'tiposCarteira'));
     }
 }
