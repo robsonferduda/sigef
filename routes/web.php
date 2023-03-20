@@ -17,7 +17,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 
-Route::get('ala/evento','AlaController@listar');
+Route::get('alas','AlaController@index');
+Route::resource('ala','AlaController');
 
 Route::get('blocos','BlocoController@listar');
 Route::get('bloco/novo','BlocoController@novo');
@@ -28,13 +29,15 @@ Route::get('blocos/setor/{setor}','BlocoController@buscarBlocosPorSetor');
 Route::get('eventos','EventoController@index');
 Route::get('eventos/listar','EventoController@listar');
 Route::get('evento/locais','EventoController@locais');
+Route::get('evento/setores','EventoController@setores');
 Route::get('evento/local/{id}/adicionar','EventoController@adicionarLocal');
 Route::get('evento/local/{id}/remover','EventoController@removerLocal');
 Route::get('evento/locais','EventoController@locais');
 Route::post('evento/alterar','EventoController@alterar');
 Route::resource('evento','EventoController');
 
-Route::get('grupo/evento','GrupoController@listar');
+Route::get('grupos','GrupoController@index');
+Route::resource('grupo','GrupoController');
 
 Route::get('locais','LocalController@listar');
 Route::get('local/novo','LocalController@novo');

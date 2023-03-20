@@ -180,30 +180,27 @@
                                     </a>                                   
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
-                                    <a href="{{ url('setor/evento') }}"  class="menu-link menu-toggle">
+                                    <a href="{{ url('evento/setores') }}"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-building"></i>
                                         </span>
                                         <span class="menu-text">Setores</span>
-                                        <i class="menu-arrow"></i>
                                     </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
-                                    <a href="{{ url('ala/evento') }}"  class="menu-link menu-toggle">
+                                    <a href="{{ url('alas') }}"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-list-alt"></i>
                                         </span>
                                         <span class="menu-text">Alas</span>
-                                        <i class="menu-arrow"></i>
                                     </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
-                                    <a href="{{ url('grupo/evento') }}"  class="menu-link menu-toggle">
+                                    <a href="{{ url('grupos') }}"  class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <i class="fas fa-users"></i>
                                         </span>
                                         <span class="menu-text">Grupos</span>
-                                        <i class="menu-arrow"></i>
                                     </a>
                                 </li>
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true">
