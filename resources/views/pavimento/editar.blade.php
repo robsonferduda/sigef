@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <label>Nome do Pavimento</label>
+                            <label>Nome do Pavimento <span class="text-danger">Obrigatório</span></label>
                             <input type="text" name="nome" value="{{ $pavimento->nm_pavimento_pav }}" class="form-control" placeholder="Nome do Pavimento"/>
                         </div>
                         <div class="col-lg-6">
@@ -25,7 +25,7 @@
 
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <label for="select2">Setor</label>
+                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
                             <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
                                 <option value="">Selecione o setor</option>
                                 @foreach($setores as $setor)
@@ -36,20 +36,16 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <label for="select2">Bloco</label>
+                            <label for="select2">Bloco <span class="text-danger">Obrigatório</span></label>
                             <select name="bloco" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
                                 <option value="">Selecione o bloco</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                            <a href="{{ url('pavimentos') }}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-light-success mr-2"><i class="fas fa-save"></i> Salvar</button>
+                    <a href="{{ url('pavimentos') }}" class="btn btn-light-danger"><i class="fas fa-times"></i> Cancelar</a>
                 </div>
             </form>
         </div>
@@ -71,6 +67,13 @@
                             validators: {
                                 notEmpty: {
                                     message: 'O campo "Nome do Pavimento" é obrigatório.'
+                                }
+                            }
+                        },
+                        setor: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'O campo "Setor" é obrigatório.'
                                 }
                             }
                         },
