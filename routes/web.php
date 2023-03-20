@@ -32,6 +32,8 @@ Route::get('evento/locais','EventoController@locais');
 Route::get('evento/setores','EventoController@setores');
 Route::get('evento/local/{id}/adicionar','EventoController@adicionarLocal');
 Route::get('evento/local/{id}/remover','EventoController@removerLocal');
+Route::get('evento/setor/{id}/adicionar','EventoController@setorLocal');
+Route::get('evento/setor/{id}/remover','EventoController@setorLocal');
 Route::get('evento/locais','EventoController@locais');
 Route::post('evento/alterar','EventoController@alterar');
 Route::resource('evento','EventoController');
