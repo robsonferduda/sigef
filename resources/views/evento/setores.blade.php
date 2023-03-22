@@ -47,14 +47,15 @@
                             <li class="navi-item">
                                 <a class="navi-link active" href="">
                                     <span class="navi-icon"><i class="fas fa-map-marker"></i></span>
-                                    <span class="navi-text">Locais Selecionados</span>
+                                    <span class="navi-text">Setores Selecionados</span>
                                 </a>
                             </li>
-                            @foreach ($locais_selecionados as $local)
+                            @foreach ($setores_selecionados as $setor)
+                                <h6 class="mt-3">{{ $setor->local->nm_local_prova_lop }}</h6>
                                 <li class="navi-item">
-                                    <a class="navi-link btn-confirmar" href="{{ url('evento/setor/'.$local->cd_local_prova_lop.'/remover') }}">
+                                    <a class="navi-link btn-confirmar" href="{{ url('evento/setor/'.$setor->cd_setor_set.'/remover') }}">
                                         <span class="navi-icon"><i class="fas fa-trash"></i></span>
-                                        <span class="navi-text">{{ $local->nm_local_prova_lop }}</span>
+                                        <span class="navi-text">{{ $setor->nm_setor_set }}</span>
                                     </a>
                                 </li>
                             @endforeach
