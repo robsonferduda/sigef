@@ -50,14 +50,18 @@
                                     <span class="navi-text">Setores Selecionados</span>
                                 </a>
                             </li>
+                            @php $ctrl = "" @endphp
                             @foreach ($setores_selecionados as $setor)
-                                <h6 class="mt-3">{{ $setor->local->nm_local_prova_lop }}</h6>
+                                @if($ctrl != $setor->local->nm_local_prova_lop)
+                                    <h6 class="mt-3">{{ $setor->local->nm_local_prova_lop }}</h6>
+                                @endif
                                 <li class="navi-item">
                                     <a class="navi-link btn-confirmar" href="{{ url('evento/setor/'.$setor->cd_setor_set.'/remover') }}">
                                         <span class="navi-icon"><i class="fas fa-trash"></i></span>
                                         <span class="navi-text">{{ $setor->nm_setor_set }}</span>
                                     </a>
                                 </li>
+                                @php $ctrl = $setor->local->nm_local_prova_lop @endphp
                             @endforeach
                         </ul>
                     </div>

@@ -27,6 +27,13 @@ class SetorController extends Controller
         $this->evento = Session::get('evento_id');
     }
 
+    public function getSetoresLocal($local)
+    {
+        $setores = Setor::where('cd_local_prova_lop', $local)->orderBy('nm_setor_set')->get();
+
+        return json_encode($setores);
+    }
+
     public function listar(Request $request)
     {
         Session::put('menu_item','setores');
