@@ -156,6 +156,14 @@
                                                     <span class="menu-text">Salas</span>
                                                 </a>
                                             </li>
+                                            <li class="menu-item {{ (Session::get('menu_item') == 'banheiros') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ url('banheiros') }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-line">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Banheiros</span>
+                                                </a>
+                                            </li>
 										</ul>
 									</div>
 								</li>
@@ -177,7 +185,7 @@
                                             <i class="fas fa-map-marker"></i>
                                         </span>
                                         <span class="menu-text">Locais</span>
-                                    </a>                                   
+                                    </a>
                                 </li>
 								<li class="menu-item {{ (Session::get('menu_pai') == 'local') ? 'menu-item-open' : '' }}" aria-haspopup="true">
                                     <a href="{{ url('evento/setores') }}"  class="menu-link menu-toggle">

@@ -18,19 +18,19 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-sm-2 col-md-2 col-lg-2">
-                            <label>Código do Setor</label>
+                            <label>Código do Setor <span class="text-danger">Obrigatório</span></label>
                             <input type="number" name="codigo" value="{{ $setor->nu_setor_set }}" class="form-control" placeholder="Código do Setor"/>
                         </div>
                         <div class="form-group col-sm-5 col-md-5 col-lg-5">
-                            <label>Nome do Setor</label>
+                            <label>Nome do Setor <span class="text-danger">Obrigatório</span></label>
                             <input type="text" name="nome" value="{{ $setor->nm_setor_set }}" class="form-control" placeholder="Nome do Setor"/>
                         </div>
                         <div class="form-group col-sm-5 col-md-5 col-lg-5">
-                            <label>Nome Abreviado do Setor</label>
+                            <label>Nome Abreviado do Setor <span class="text-danger">Obrigatório</span></label>
                             <input type="text" name="nome_abrev" value="{{ $setor->nm_abrev_setor_set }}" class="form-control" placeholder="Nome Abreviado do Setor"/>
                         </div>
                         <div class="form-group col-sm-6">
-                            <label for="select2">Local</label>
+                            <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
                             <select name="local" class="form-control select2 select2-hidden-accessible"
                                     style="width: 100%;" tabindex="-1" aria-hidden="true">
                                 <option value="">Selecione o Local</option>

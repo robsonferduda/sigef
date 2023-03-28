@@ -64,3 +64,8 @@ Route::get('salas','SalaController@listar');
 Route::get('sala/novo','SalaController@novo');
 Route::post('sala/salvar','SalaController@salvar');
 Route::match(['GET', 'POST'],'sala/{sala}/editar','SalaController@editar');
+
+Route::get('banheiros','BanheiroController@listar');
+Route::get('banheiro/novo','BanheiroController@novo');
+Route::post('banheiro/salvar','BanheiroController@salvar');
+Route::match(['GET', 'POST'],'banheiro/{banheiro}/editar','BanheiroController@editar');
