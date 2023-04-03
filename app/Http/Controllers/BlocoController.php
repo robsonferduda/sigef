@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Bloco;
 use App\Models\Setor;
+use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Laracasts\Flash\Flash;
 use phpDocumentor\Reflection\Types\Boolean;
 use Yajra\DataTables\DataTables;
 
@@ -149,34 +151,8 @@ class BlocoController extends Controller
 
     public function salvar(Request $request)
     {
-        Bloco::create([
-            'cd_setor_set' => $request->setor,
-            'nm_endereco_acesso_bls' => $request->endereco,
-            'fl_muro_bls' => isset($request->muro),
-            'fl_guarita_bls' => isset($request->guarita),
-            'fl_elevador_bls' => isset($request->elevador),
-            'fl_portao_bls' => isset($request->portao),
-            'fl_rampa_bls' => isset($request->rampa),
-            'fl_vigilancia_bls' => isset($request->vigilancia),
-            'fl_monitoramento_bls' => isset($request->monitoramento),
-            'fl_estacionamento_bls' => isset($request->estacionamento),
-            'fl_wifi_bls' => isset($request->wifi),
-            'nm_bloco_bls' => $request->nome
-        ]);
-
-        return redirect('blocos');
-    }
-
-    public function editar(Request $request, $bloco) {
-
-        /* Marcação de Menus */
-        Session::put('menu_item','locais');
-        $breadcrumb = $this->breadcrumb;
-
-        $bloco = Bloco::find($bloco);
-
-        if($request->post()) {
-            $bloco->update([
+        try{
+            Bloco::create([
                 'cd_setor_set' => $request->setor,
                 'nm_endereco_acesso_bls' => $request->endereco,
                 'fl_muro_bls' => isset($request->muro),
@@ -191,7 +167,57 @@ class BlocoController extends Controller
                 'nm_bloco_bls' => $request->nome
             ]);
 
-            return redirect('blocos');
+            Flash::success("Dados inseridos com sucesso");
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
+
+        return redirect('blocos');
+    }
+
+    public function editar(Request $request, $bloco) {
+
+        /* Marcação de Menus */
+        Session::put('menu_item','locais');
+        $breadcrumb = $this->breadcrumb;
+
+        $bloco = Bloco::find($bloco);
+
+        if($request->post()) {
+            try{
+                $bloco->update([
+                    'cd_setor_set' => $request->setor,
+                    'nm_endereco_acesso_bls' => $request->endereco,
+                    'fl_muro_bls' => isset($request->muro),
+                    'fl_guarita_bls' => isset($request->guarita),
+                    'fl_elevador_bls' => isset($request->elevador),
+                    'fl_portao_bls' => isset($request->portao),
+                    'fl_rampa_bls' => isset($request->rampa),
+                    'fl_vigilancia_bls' => isset($request->vigilancia),
+                    'fl_monitoramento_bls' => isset($request->monitoramento),
+                    'fl_estacionamento_bls' => isset($request->estacionamento),
+                    'fl_wifi_bls' => isset($request->wifi),
+                    'nm_bloco_bls' => $request->nome
+                ]);
+
+                Flash::success("Dados inseridos com sucesso");
+                return redirect('blocos');
+
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+            } catch (Exception $e) {
+
+                Flash::error("Ocorreu um erro ao inserir o registro");
+            }
+
         }
 
         $setores = Setor::orderBy('nm_abrev_setor_set')->get();

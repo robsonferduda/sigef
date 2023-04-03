@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Bloco;
 use App\Models\Pavimento;
 use App\Models\Setor;
+use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Laracasts\Flash\Flash;
 use phpDocumentor\Reflection\Types\Boolean;
 use Yajra\DataTables\DataTables;
 
@@ -93,10 +95,22 @@ class PavimentoController extends Controller
 
     public function salvar(Request $request)
     {
-        $pavimento = Pavimento::create([
-            'cd_bloco_setor_bls' => $request->bloco,
-            'nm_pavimento_pav' => $request->nome
-        ]);
+        try{
+            $pavimento = Pavimento::create([
+                'cd_bloco_setor_bls' => $request->bloco,
+                'nm_pavimento_pav' => $request->nome
+            ]);
+
+            Flash::success("Dados inseridos com sucesso");
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
 
         return redirect('pavimentos');
     }
@@ -114,12 +128,24 @@ class PavimentoController extends Controller
         $pavimento = Pavimento::find($pavimento);
 
         if($request->post()) {
-            $pavimento->update([
-                'cd_bloco_setor_bls' => $request->bloco,
-                'nm_pavimento_pav' => $request->nome
-            ]);
+            try{
+                $pavimento->update([
+                    'cd_bloco_setor_bls' => $request->bloco,
+                    'nm_pavimento_pav' => $request->nome
+                ]);
 
-            return redirect('pavimentos');
+                Flash::success("Dados inseridos com sucesso");
+                return redirect('pavimentos');
+
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+            } catch (Exception $e) {
+
+                Flash::error("Ocorreu um erro ao inserir o registro");
+            }
+
         }
 
         return view('pavimento.editar', compact('breadcrumb', 'blocos', 'setores', 'pavimento'));

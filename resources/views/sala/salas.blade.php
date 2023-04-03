@@ -13,6 +13,9 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-12">
+                        @include('layouts.mensagens')
+                    </div>
                     <div class="form w-100">
                         <div class="card-body">
                             <div class="form-group row">
@@ -53,15 +56,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="select2">Tipo de Sala</label>
-                                    <select name="tipo_sala" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="tipo_sala">
-                                        <option value="">Selecione o Tipo de Sala</option>
-                                        @foreach($tiposSala as $tipo)
-                                            <option value="{{ $tipo->cd_tipo_sala_tis }}">{{ $tipo->nm_tipo_tis }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
                             </div>
                         </div>
                         <div class="card-footer center">
@@ -81,7 +75,6 @@
                         <th>Bloco</th>
                         <th>Pavimento</th>
                         <th>Sala</th>
-                        <th>Tipo Sala</th>
                         <th>Tipo Carteira</th>
                         <th>Nº Carteiras</th>
                         <th class="box-btn-acoes-col2">Ações</th>
@@ -123,7 +116,6 @@
                         d.pavimento    = $('select[name="pavimento"]').val();
                         d.pavimento    = $('select[name="pavimento"]').val();
                         d.tipo_carteira = $('select[name="tipo_carteira"]').val();
-                        d.tipo_sala = $('select[name="tipo_sala"]').val();
                     }
                 },
                 "columns": [
@@ -132,7 +124,6 @@
                     { data: "bloco" },
                     { data: "pavimento" },
                     { data: "sala" },
-                    { data: "tipo_sala" },
                     { data: "tipo_carteira" },
                     { data: "numero_carteiras" },
                     { data: "acoes" },
@@ -145,7 +136,6 @@
                 $('select[name="bloco"]').val('').trigger('change');
                 $('select[name="pavimento"]').val('').trigger('change');
                 $('select[name="tipo_carteira"]').val('').trigger('change');
-                $('select[name="tipo_sala"]').val('').trigger('change');
                 table.draw();
             });
 

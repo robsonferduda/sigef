@@ -113,12 +113,25 @@ class BanheiroController extends Controller
 
     public function salvar(Request $request)
     {
-        $banheiro = Banheiro::create([
-            'nm_banheiro_ban' => $request->nome,
-            'fl_adaptado_ban' => isset($request->adaptado),
-            'cd_pavimento_pav' => $request->pavimento,
-            'nu_cabines_ban' => $request->qtd_cabines
-        ]);
+        try{
+
+            $banheiro = Banheiro::create([
+                'nm_banheiro_ban' => $request->nome,
+                'fl_adaptado_ban' => isset($request->adaptado),
+                'cd_pavimento_pav' => $request->pavimento,
+                'nu_cabines_ban' => $request->qtd_cabines
+            ]);
+
+            Flash::success("Dados inseridos com sucesso");
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
 
         return redirect('banheiros');
     }
@@ -136,15 +149,29 @@ class BanheiroController extends Controller
         $banheiro = Banheiro::find($banheiro);
 
         if($request->post()) {
-            
-            $banheiro->update([
-                'nm_banheiro_ban' => $request->nome,
-                'fl_adaptado_ban' => isset($request->adaptado),
-                'cd_pavimento_pav' => $request->pavimento,
-                'nu_cabines_ban' => $request->qtd_cabines
-            ]);
 
-            return redirect('banheiros');
+            try{
+
+                $banheiro->update([
+                    'nm_banheiro_ban' => $request->nome,
+                    'fl_adaptado_ban' => isset($request->adaptado),
+                    'cd_pavimento_pav' => $request->pavimento,
+                    'nu_cabines_ban' => $request->qtd_cabines
+                ]);
+
+                Flash::success("Dados inseridos com sucesso");
+                return redirect('banheiros');
+
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+            } catch (Exception $e) {
+
+                Flash::error("Ocorreu um erro ao inserir o registro");
+            }
+
+
         }
 
         return view('banheiro.editar', compact('breadcrumb', 'blocos', 'setores', 'banheiro'));

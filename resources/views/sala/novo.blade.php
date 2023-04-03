@@ -54,17 +54,6 @@
                             </select>
                         </div>
                         <div class="col-lg-6">
-                            <label for="select2">Tipo de Sala <span class="text-danger">Obrigatório</span></label>
-                            <select name="tipo_sala" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="tipo_sala">
-                                <option value="">Selecione o Tipo de Sala</option>
-                                @foreach($tiposSala as $tipo)
-                                    <option value="{{ $tipo->cd_tipo_sala_tis }}">{{ $tipo->nm_tipo_tis }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-lg-6">
                             <label>Número de Carteiras</label>
                             <input type="number" name="qtd_cardeiras" class="form-control" placeholder="Número de Carteiras"/>
                         </div>
@@ -123,13 +112,6 @@
                             validators: {
                                 notEmpty: {
                                     message: 'O campo "Tipo de Carteira" é obrigatório.'
-                                }
-                            }
-                        },
-                        tipo_sala: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'O campo "Tipo de Sala" é obrigatório.'
                                 }
                             }
                         },
