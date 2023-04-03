@@ -6,8 +6,10 @@ use App\Models\Contato;
 use App\Models\Local;
 use App\Models\RedeEnsino;
 use App\Models\Setor;
+use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Laracasts\Flash\Flash;
 use Yajra\DataTables\DataTables;
 
 class SetorController extends Controller
@@ -117,26 +119,40 @@ class SetorController extends Controller
 
     public function salvar(Request $request)
     {
-        $setor = Setor::create([
-            'cd_local_prova_lop' => $request->local,
-            'cd_rede_ensino_ree' => $request->rede,
-            'nm_setor_set' => $request->nome,
-            'nm_abrev_setor_set' => $request->nome_abrev,
-            'nu_setor_set' => $request->codigo
-        ]);
+        try {
 
-        if($setor) {
-            if(isset($request->contato)) {
-                foreach ($request->contato as $contato) {
-                    Contato::create([
-                        'nm_contato_con' => empty($contato['nome_contato']) ? 'Não Informado' : $contato['nome_contato'],
-                        'dc_email_con' => empty($contato['email_contato']) ? null : $contato['email_contato'],
-                        'nu_fone_con' => empty($contato['telefone_contato']) ? null : $contato['telefone_contato'],
-                        'cd_setor_set' => $setor->cd_setor_set
-                    ]);
+            $setor = Setor::create([
+                'cd_local_prova_lop' => $request->local,
+                'cd_rede_ensino_ree' => $request->rede,
+                'nm_setor_set' => $request->nome,
+                'nm_abrev_setor_set' => $request->nome_abrev,
+                'nu_setor_set' => $request->codigo
+            ]);
+
+            if($setor) {
+                if(isset($request->contato)) {
+                    foreach ($request->contato as $contato) {
+                        Contato::create([
+                            'nm_contato_con' => empty($contato['nome_contato']) ? 'Não Informado' : $contato['nome_contato'],
+                            'dc_email_con' => empty($contato['email_contato']) ? null : $contato['email_contato'],
+                            'nu_fone_con' => empty($contato['telefone_contato']) ? null : $contato['telefone_contato'],
+                            'cd_setor_set' => $setor->cd_setor_set
+                        ]);
+                    }
                 }
             }
+
+            Flash::success("Dados inseridos com sucesso");
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
         }
+
         return redirect('setores');
     }
 
@@ -153,29 +169,43 @@ class SetorController extends Controller
         $setor = Setor::with(['contatos'])->find($setor);
 
         if($request->post()) {
-            $setor->update([
-                'cd_local_prova_lop' => $request->local,
-                'cd_rede_ensino_ree' => $request->rede,
-                'nm_abrev_setor_set' => $request->nome_abrev,
-                'nm_setor_set' => $request->nome,
-                'nu_setor_set' => $request->codigo
-            ]);
 
-            if(isset($setor->contatos)) {
-                $setor->contatos()->delete();
-            }
+            try{
 
-            if(isset($request->contato)) {
-                foreach ($request->contato as $contato) {
-                    Contato::create([
-                        'nm_contato_con' => empty($contato['nome_contato']) ? 'Não Informado' : $contato['nome_contato'],
-                        'dc_email_con' => empty($contato['email_contato']) ? null : $contato['email_contato'],
-                        'nu_fone_con' => empty($contato['telefone_contato']) ? null : $contato['telefone_contato'],
-                        'cd_setor_set' => $setor->cd_setor_set
-                    ]);
+                $setor->update([
+                    'cd_local_prova_lop' => $request->local,
+                    'cd_rede_ensino_ree' => $request->rede,
+                    'nm_abrev_setor_set' => $request->nome_abrev,
+                    'nm_setor_set' => $request->nome,
+                    'nu_setor_set' => $request->codigo
+                ]);
+
+                if(isset($setor->contatos)) {
+                    $setor->contatos()->delete();
                 }
+
+                if(isset($request->contato)) {
+                    foreach ($request->contato as $contato) {
+                        Contato::create([
+                            'nm_contato_con' => empty($contato['nome_contato']) ? 'Não Informado' : $contato['nome_contato'],
+                            'dc_email_con' => empty($contato['email_contato']) ? null : $contato['email_contato'],
+                            'nu_fone_con' => empty($contato['telefone_contato']) ? null : $contato['telefone_contato'],
+                            'cd_setor_set' => $setor->cd_setor_set
+                        ]);
+                    }
+                }
+
+                Flash::success("Dados inseridos com sucesso");
+                return redirect('setores');
+
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+            } catch (Exception $e) {
+
+                Flash::error("Ocorreu um erro ao inserir o registro");
             }
-            return redirect('setores');
         }
 
         return view('setor.editar', compact('breadcrumb', 'locais', 'redes', 'setor'));

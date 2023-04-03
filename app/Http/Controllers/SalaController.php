@@ -8,8 +8,10 @@ use App\Models\Sala;
 use App\Models\Setor;
 use App\Models\TipoCarteira;
 use App\Models\TipoSala;
+use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Laracasts\Flash\Flash;
 use phpDocumentor\Reflection\Types\Boolean;
 use Yajra\DataTables\DataTables;
 
@@ -38,7 +40,6 @@ class SalaController extends Controller
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
         $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->get();
-        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
         $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
         if($request->ajax()) {
@@ -47,7 +48,6 @@ class SalaController extends Controller
             $setor = $request->setor;
             $bloco = $request->bloco;
             $pavimento = $request->pavimento;
-            $tipoSala = $request->tipo_sala;
             $tipoCarteira = $request->tipo_carteira;
 
             $salas = Sala::with(['tipoSala', 'tipoCarteira'])->when($nome, function ($query) use ($nome) {
@@ -67,9 +67,6 @@ class SalaController extends Controller
                             $query->where('cd_setor_set', $setor);
                         });
                     });
-                })
-                ->when($tipoSala, function ($query) use ($tipoSala) {
-                    return $query->where('cd_tipo_sala_tis', $tipoSala);
                 })
                 ->when($tipoCarteira, function ($query) use ($tipoCarteira) {
                     return $query->where('cd_tipo_carteira_tic', $tipoCarteira);
@@ -92,9 +89,6 @@ class SalaController extends Controller
                 ->addColumn('sala', function ($sala) {
                     return $sala->nm_sala_sal;
                 })
-                ->addColumn('tipo_sala', function ($sala) {
-                    return $sala->tipoSala->nm_tipo_tis;
-                })
                 ->addColumn('tipo_carteira', function ($sala) {
                     return $sala->tipoCarteira->nm_tipo_tic;
                 })
@@ -110,7 +104,7 @@ class SalaController extends Controller
                 ->make(true);
         }
 
-        return view('sala.salas', compact('breadcrumb', 'blocos', 'setores', 'pavimentos', 'tiposSala', 'tiposCarteira'));
+        return view('sala.salas', compact('breadcrumb', 'blocos', 'setores', 'pavimentos', 'tiposCarteira'));
     }
 
     public function novo(Request $request)
@@ -122,21 +116,30 @@ class SalaController extends Controller
 
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
-        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
         $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
-        return view('sala.novo', compact('breadcrumb', 'blocos', 'setores', 'tiposSala', 'tiposCarteira'));
+        return view('sala.novo', compact('breadcrumb', 'blocos', 'setores', 'tiposCarteira'));
     }
 
     public function salvar(Request $request)
     {
-        $sala = Sala::create([
-            'cd_tipo_sala_tis' => $request->tipo_sala,
-            'nu_carteiras_sal' => $request->qtd_cardeiras,
-            'cd_tipo_carteira_tic' => $request->tipo_carteira,
-            'nm_sala_sal' => $request->nome,
-            'cd_pavimento_pav' => $request->pavimento,
-        ]);
+        try{
+            $sala = Sala::create([
+                'nu_carteiras_sal' => $request->qtd_cardeiras,
+                'cd_tipo_carteira_tic' => $request->tipo_carteira,
+                'nm_sala_sal' => $request->nome,
+                'cd_pavimento_pav' => $request->pavimento,
+            ]);
+            Flash::success("Dados inseridos com sucesso");
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+        } catch (Exception $e) {
+
+            Flash::error("Ocorreu um erro ao inserir o registro");
+        }
 
         return redirect('salas');
     }
@@ -150,24 +153,35 @@ class SalaController extends Controller
 
         $blocos = Bloco::orderBy('nm_bloco_bls')->get();
         $setores = Setor::orderBy('nm_setor_set')->get();
-        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
         $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
         $sala = Sala::find($sala);
 
         if($request->post()) {
-            $sala->update([
-                'cd_tipo_sala_tis' => $request->tipo_sala,
-                'nu_carteiras_sal' => $request->qtd_cardeiras,
-                'cd_tipo_carteira_tic' => $request->tipo_carteira,
-                'nm_sala_sal' => $request->nome,
-                'cd_pavimento_pav' => $request->pavimento,
-            ]);
 
-            return redirect('salas');
+            try{
+
+                $sala->update([
+                    'nu_carteiras_sal' => $request->qtd_cardeiras,
+                    'cd_tipo_carteira_tic' => $request->tipo_carteira,
+                    'nm_sala_sal' => $request->nome,
+                    'cd_pavimento_pav' => $request->pavimento,
+                ]);
+
+                Flash::success("Dados inseridos com sucesso");
+                return redirect('salas');
+
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
+
+            } catch (Exception $e) {
+
+                Flash::error("Ocorreu um erro ao inserir o registro");
+            }
         }
 
-        return view('sala.editar', compact('breadcrumb', 'blocos', 'setores', 'sala', 'tiposSala', 'tiposCarteira'));
+        return view('sala.editar', compact('breadcrumb', 'blocos', 'setores', 'sala', 'tiposCarteira'));
     }
 
     public function getSalas($setor, $local)

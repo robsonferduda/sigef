@@ -13,6 +13,9 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-12">
+                        @include('layouts.mensagens')
+                    </div>
                     <div class="form w-100">
                         <div class="card-body">
                             <div class="form-group row">
