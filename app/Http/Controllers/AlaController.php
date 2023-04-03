@@ -22,7 +22,7 @@ class AlaController extends Controller
         $this->breadcrumb['titulo'] = 'Alas';
         $this->breadcrumb['itens'] = array();
 
-        \Session::put('menu_pai','setor');
+        \Session::put('menu_pai','ala');
 
         $this->evento = Session::get('evento_id');
     }

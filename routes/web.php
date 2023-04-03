@@ -32,6 +32,8 @@ Route::get('evento/locais','EventoController@locais');
 Route::get('evento/setores','EventoController@setores');
 Route::get('evento/local/{id}/adicionar','EventoController@adicionarLocal');
 Route::get('evento/local/{id}/remover','EventoController@removerLocal');
+Route::get('evento/setor/{id}/adicionar','EventoController@adicionarSetor');
+Route::get('evento/setor/{id}/remover','EventoController@removerSetor');
 Route::get('evento/locais','EventoController@locais');
 Route::post('evento/alterar','EventoController@alterar');
 Route::resource('evento','EventoController');
@@ -49,6 +51,7 @@ Route::resource('local','LocalController');
 Route::get('setores','SetorController@listar');
 Route::get('setor/novo','SetorController@novo');
 Route::get('setor/evento','SetorController@setorEvento');
+Route::get('setor/local/{local}','SetorController@getSetoresLocal');
 Route::post('setor/salvar','SetorController@salvar');
 Route::match(['GET', 'POST'],'setor/{setor}/editar','SetorController@editar');
 

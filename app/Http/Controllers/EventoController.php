@@ -7,6 +7,7 @@ use Auth;
 use App\Utils;
 use App\User;
 use App\Models\Local;
+use App\Models\Setor;
 use App\Models\Evento;
 use App\Models\TipoEvento;
 use Laracasts\Flash\Flash;
@@ -183,10 +184,10 @@ class EventoController extends Controller
         $breadcrumb = $this->breadcrumb;
 
         $evento = Evento::find(10);
-        $locais_disponiveis = Local::whereNotIn('cd_local_prova_lop', $evento->locais->map->only('cd_local_prova_lop')->toArray())->orderBy('nm_local_prova_lop')->get();
-        $locais_selecionados = $evento->locais;
+        $locais_disponiveis = $evento->locais;
+        $setores_selecionados = $evento->setores;
 
-        return view('evento/setores', compact('breadcrumb','locais_disponiveis','locais_selecionados'));
+        return view('evento/setores', compact('breadcrumb','locais_disponiveis','setores_selecionados'));
     }
 
     public function adicionarLocal($id)
@@ -209,6 +210,28 @@ class EventoController extends Controller
 
         Flash::success('<i class="fas fa-check text-white mr-2"></i> Local <strong>'.$local->nm_local_prova_lop.'</strong> removido com sucesso.');
         return redirect('evento/locais')->withInput();
+    }
+
+    public function adicionarSetor($id)
+    {
+        $evento = Evento::find(10);
+        $setor = Setor::find($id);
+
+        $evento->setores()->attach($setor);
+
+        Flash::success('<i class="fas fa-check text-white mr-2"></i> Setor <strong>'.$setor->nm_setor_set.'</strong> adicionado com sucesso.');
+        return redirect('evento/setores')->withInput();
+    }
+
+    public function removerSetor($id)
+    {
+        $evento = Evento::find(10);
+        $setor = Setor::find($id);
+
+        $evento->setores()->detach($setor);
+
+        Flash::success('<i class="fas fa-check text-white mr-2"></i> Setor <strong>'.$setor->nm_setor_set.'</strong> removido com sucesso.');
+        return redirect('evento/setores')->withInput();
     }
 
 }

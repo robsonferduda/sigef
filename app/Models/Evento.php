@@ -24,4 +24,9 @@ class Evento extends Model
     {
         return $this->belongsToMany(Local::class, 'espaco_fisico.local_evento_loe', 'cd_evento_eef', 'cd_local_prova_lop');
     }
+
+    public function setores()
+    {
+        return $this->belongsToMany(Setor::class, 'espaco_fisico.setor_evento_see', 'cd_evento_eef', 'cd_setor_set');
+    }
 }

@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
+
+use App\Models\Sala;
+use App\Models\TipoCarteira;
+use App\Models\TipoSala;
 use App\Models\Bloco;
 use App\Models\Pavimento;
 use App\Models\Setor;
+use App\Models\Local;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -22,7 +28,7 @@ class GrupoController extends Controller
         $this->breadcrumb['titulo'] = 'Grupos';
         $this->breadcrumb['itens'] = array();
 
-        \Session::put('menu_pai','setor');
+        \Session::put('menu_pai','grupo');
 
         $this->evento = Session::get('evento_id');
     }
@@ -31,7 +37,14 @@ class GrupoController extends Controller
     {
         $breadcrumb = $this->breadcrumb;
 
-        return view('grupo.index', compact('breadcrumb'));
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
+        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
+        $setores = Setor::orderBy('nm_setor_set')->get();
+        $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->get();
+        $tiposSala = TipoSala::orderBy('nm_tipo_tis')->get();
+        $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
+
+        return view('grupo.index', compact('breadcrumb','blocos', 'setores', 'pavimentos','locais'));
     }
 
     public function create()
