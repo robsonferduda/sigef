@@ -19,4 +19,9 @@ class Pavimento extends Model
     {
         return $this->hasOne(Bloco::class, 'cd_bloco_setor_bls', 'cd_bloco_setor_bls');
     }
+
+    public function salas()
+    {
+        return $this->hasMany(Sala::class, 'cd_pavimento_pav', 'cd_pavimento_pav');
+    }
 }

@@ -17,7 +17,7 @@ class Sala extends Model
 
     public function pavimento()
     {
-        return $this->hasOne(Pavimento::class, 'cd_pavimento_pav', 'cd_pavimento_pav');
+        return $this->belongsTo(Pavimento::class, 'cd_pavimento_pav', 'cd_pavimento_pav');
     }
 
     public function tipoSala()

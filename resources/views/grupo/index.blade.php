@@ -20,7 +20,7 @@
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-3">
-                                    <label for="select2">Local</label>
+                                    <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
                                     <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
                                         <option value="">Selecione o local</option>
                                         @foreach($locais as $local)
@@ -29,8 +29,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="select2">Setor</label>
-                                    <select name="setor" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="setor">
+                                    <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
+                                    <select name="setor" disabled class="form-control select2 select2-hidden-accessible mostra-salas" style="width: 100%;" tabindex="-1" aria-hidden="true" id="setor">
                                         <option value="">Selecione o setor</option>
                                         @foreach($setores as $setor)
                                             <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
@@ -50,13 +50,17 @@
                                     </select>
                                 </div>
 
-                            </div>
-                            
-                            
+                            </div>                            
                         </div>
-                        <div class="card-footer center">
-                            <button type="button" class="btn btn-primary mr-2 btn-buscar"><i class="fa fa-search"></i> Buscar</button>
-                            <button type="button" class="btn btn-warning mr-2 btn-limpar"><i class="fa fa-broom"></i> Limpar</button>
+                        <div class="card-body p-0">
+                            <div class="table-responsive" id="kt_blockui_card">
+                                <div class="list list-hover min-w-500px" data-inbox="list">
+                                    
+
+                                    
+                                    
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -70,6 +74,86 @@
          
             $('.select2').select2({
                 dropdownPosition: 'below',
+            });
+
+            $('.mostra-salas').on('select2:select',function (){
+
+                let id_local = $("#local").val();
+                let id_setor = $("#setor").val();
+
+                fetch('sala/setor/'+id_setor+'/local/'+id_local)
+                    .then(response => response.json())
+                    .then(function(grupos){
+                        grupos.forEach(grupo => {
+
+                              
+                            $('.list').append('<div class="d-flex align-items-start list-item card-spacer-x py-4" data-inbox="message">' +
+                                        '<div class="d-flex align-items-center">' +
+                                            '<div class="d-flex align-items-center mr-3" data-inbox="actions">' +
+                                                '<label class="checkbox checkbox-inline checkbox-primary flex-shrink-0 mr-3">' +
+                                                    '<input type="checkbox" class="seleciona">' +
+                                                    '<span></span>' +
+                                                '</label>' +
+                                                '<span class="label label-lg label-light-primary label-inline">CANHOTO</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="flex-grow-1 mt-1 mr-2" data-toggle="view">' +
+                                            '<div class="font-weight-bolder mr-2">'+grupo.bloco+' > '+grupo.pavimento+' > '+grupo.nome+'</div>' +
+                                        '</div>' +
+                                    '</div>');
+
+                        });
+                    });
+
+            });
+
+            $(document).on('click', '.seleciona', function(e) {
+
+                check = $(this);
+                if($(this).is(":checked")){                    
+                    
+                    KTApp.block('#kt_blockui_card', {
+                        overlayColor: '#000000',
+                        state: 'danger',
+                        message: 'Aguarde... Processo de alocação da sala em andamento'
+                        });
+
+                    setTimeout(function() {
+                    KTApp.unblock('#kt_blockui_card');
+                    }, 2000);
+
+                }else{
+
+                    Swal.fire({
+                        title: "Tem certeza que deseja remover o grupo do evento corrente",
+                        text: "O espaço será desalocado e o total de carteiras disponíveis alterado.",
+                        icon: "warning",
+                        confirmButtonColor: '#1BC5BD',
+                        showCancelButton: true,
+                        cancelButtonText: '<i class="fa fa-times text-white"></i> Cancelar',
+                        confirmButtonText: '<i class="fa fa-check text-white"></i> Sim, remover'
+                    }).then(function(result) {
+                        
+                        if(result.value){
+
+                            KTApp.block('#kt_blockui_card', {
+                                overlayColor: '#000000',
+                                state: 'danger',
+                                message: 'Aguarde... Removendo a sala do evento'
+                                });
+
+                            setTimeout(function() {
+                            KTApp.unblock('#kt_blockui_card');
+                            }, 2000);
+                            
+                        }else if(result.dismiss == 'cancel'){
+                            check.prop("checked", true);
+                        }
+                        
+                    });
+
+                }
+
             });
 
             $('#local').on('select2:select',function (){

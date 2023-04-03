@@ -29,4 +29,9 @@ class Bloco extends Model
     {
         return $this->hasOne(Setor::class, 'cd_setor_set', 'cd_setor_set');
     }
+
+    public function pavimentos()
+    {
+        return $this->hasMany(Pavimento::class, 'cd_bloco_setor_bls', 'cd_bloco_setor_bls');
+    }
 }

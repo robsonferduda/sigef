@@ -169,4 +169,25 @@ class SalaController extends Controller
 
         return view('sala.editar', compact('breadcrumb', 'blocos', 'setores', 'sala', 'tiposSala', 'tiposCarteira'));
     }
+
+    public function getSalas($setor, $local)
+    {
+        $salas = array();
+
+        $setor = Setor::with('blocos')->where('cd_local_prova_lop', $local)->where('cd_setor_set', $setor)->get();
+        
+        foreach($setor->first()->blocos as $bloco){
+            foreach($bloco->pavimentos as $pavimento){
+
+                foreach($pavimento->salas as $sala){
+                    $salas[] = array('id' => $sala->cd_sala_sal,
+                                     'nome' =>  $sala->nm_sala_sal,
+                                     'pavimento' => $pavimento->nm_pavimento_pav ,
+                                     'bloco' => $bloco->nm_bloco_bls);
+                }
+            }
+        }
+
+        return json_encode($salas);
+    }
 }

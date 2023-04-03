@@ -25,6 +25,11 @@ class Setor extends Model
         return $this->hasOne(RedeEnsino::class, 'cd_rede_ensino_ree', 'cd_rede_ensino_ree');
     }
 
+    public function blocos()
+    {
+        return $this->hasMany(Bloco::class, 'cd_setor_set', 'cd_setor_set');
+    }
+
     public function contatos()
     {
         return $this->hasMany(Contato::class, 'cd_setor_set', 'cd_setor_set');

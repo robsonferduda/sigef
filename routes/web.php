@@ -20,6 +20,11 @@ Route::get('/', 'HomeController@index');
 Route::get('alas','AlaController@index');
 Route::resource('ala','AlaController');
 
+Route::get('banheiros','BanheiroController@listar');
+Route::get('banheiro/novo','BanheiroController@novo');
+Route::post('banheiro/salvar','BanheiroController@salvar');
+Route::match(['GET', 'POST'],'banheiro/{banheiro}/editar','BanheiroController@editar');
+
 Route::get('blocos','BlocoController@listar');
 Route::get('bloco/novo','BlocoController@novo');
 Route::post('bloco/salvar','BlocoController@salvar');
@@ -48,13 +53,6 @@ Route::get('local/{id}/excluir','LocalController@destroy');
 Route::get('local/evento','LocalController@localEvento');
 Route::resource('local','LocalController');
 
-Route::get('setores','SetorController@listar');
-Route::get('setor/novo','SetorController@novo');
-Route::get('setor/evento','SetorController@setorEvento');
-Route::get('setor/local/{local}','SetorController@getSetoresLocal');
-Route::post('setor/salvar','SetorController@salvar');
-Route::match(['GET', 'POST'],'setor/{setor}/editar','SetorController@editar');
-
 Route::get('pavimentos','PavimentoController@listar');
 Route::get('pavimento/novo','PavimentoController@novo');
 Route::post('pavimento/salvar','PavimentoController@salvar');
@@ -63,10 +61,13 @@ Route::get('pavimentos/bloco/{bloco}','PavimentoController@buscarPavimentosPorBl
 
 Route::get('salas','SalaController@listar');
 Route::get('sala/novo','SalaController@novo');
+Route::get('sala/setor/{setor}/local/{local}','SalaController@getSalas');
 Route::post('sala/salvar','SalaController@salvar');
 Route::match(['GET', 'POST'],'sala/{sala}/editar','SalaController@editar');
 
-Route::get('banheiros','BanheiroController@listar');
-Route::get('banheiro/novo','BanheiroController@novo');
-Route::post('banheiro/salvar','BanheiroController@salvar');
-Route::match(['GET', 'POST'],'banheiro/{banheiro}/editar','BanheiroController@editar');
+Route::get('setores','SetorController@listar');
+Route::get('setor/novo','SetorController@novo');
+Route::get('setor/evento','SetorController@setorEvento');
+Route::get('setor/local/{local}','SetorController@getSetoresLocal');
+Route::post('setor/salvar','SetorController@salvar');
+Route::match(['GET', 'POST'],'setor/{setor}/editar','SetorController@editar');
