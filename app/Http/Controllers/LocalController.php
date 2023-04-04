@@ -27,6 +27,13 @@ class LocalController extends Controller
         $this->evento = Session::get('evento_id');
     }
 
+    public function getOcupacao($local)
+    {
+        $dados = array('total' => rand(0,99));
+
+        return json_encode($dados);
+    }
+
     public function listar(Request $request)
     {
         Session::put('menu_item','locais');

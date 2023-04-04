@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Session;
 use Laracasts\Flash\Flash;
 use phpDocumentor\Reflection\Types\Boolean;
 use Yajra\DataTables\DataTables;
+use App\Enums\TipoCarteira as EnumTipoCarteira;
 
 class SalaController extends Controller
 {
@@ -186,6 +187,7 @@ class SalaController extends Controller
 
     public function getSalas($setor, $local)
     {
+        $flag_canhoto = false;
         $salas = array();
 
         $setor = Setor::with('blocos')->where('cd_local_prova_lop', $local)->where('cd_setor_set', $setor)->get();
@@ -194,10 +196,14 @@ class SalaController extends Controller
             foreach($bloco->pavimentos as $pavimento){
 
                 foreach($pavimento->salas as $sala){
+
+                    $flag_canhoto = ($sala->cd_tipo_carteira_tic == EnumTipoCarteira::ACADEMICA) ? true : false;
+
                     $salas[] = array('id' => $sala->cd_sala_sal,
                                      'nome' =>  $sala->nm_sala_sal,
                                      'pavimento' => $pavimento->nm_pavimento_pav ,
-                                     'bloco' => $bloco->nm_bloco_bls);
+                                     'bloco' => $bloco->nm_bloco_bls,
+                                     'flag_canhoto' => $flag_canhoto);
                 }
             }
         }

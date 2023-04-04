@@ -16,51 +16,54 @@
                     @include('layouts.mensagens')
                 </div>
                 <div class="row">
-                    <div class="form w-100">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
-                                    <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
-                                        <option value="">Selecione o local</option>
-                                        @foreach($locais as $local)
-                                            <option value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
-                                    <select name="setor" disabled class="form-control select2 select2-hidden-accessible mostra-salas" style="width: 100%;" tabindex="-1" aria-hidden="true" id="setor">
-                                        <option value="">Selecione o setor</option>
-                                        @foreach($setores as $setor)
-                                            <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="select2">Bloco</label>
-                                    <select name="bloco" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
-                                        <option value="">Selecione o bloco</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="select2">Pavimento</label>
-                                    <select name="pavimento" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="pavimento">
-                                        <option value="">Selecione o pavimento</option>
-                                    </select>
-                                </div>
+                    <div class="col-md-9">
+                        <div class="form w-100">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
+                                        <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
+                                            <option value="">Selecione o local</option>
+                                            @foreach($locais as $local)
+                                                <option value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
+                                        <select name="setor" disabled class="form-control select2 select2-hidden-accessible mostra-salas" style="width: 100%;" tabindex="-1" aria-hidden="true" id="setor">
+                                            <option value="">Selecione o setor</option>
+                                            @foreach($setores as $setor)
+                                                <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="select2">Bloco</label>
+                                        <select name="bloco" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
+                                            <option value="">Selecione o bloco</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="select2">Pavimento</label>
+                                        <select name="pavimento" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="pavimento">
+                                            <option value="">Selecione o pavimento</option>
+                                        </select>
+                                    </div>
 
-                            </div>                            
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive" id="kt_blockui_card">
-                                <div class="list list-hover min-w-500px" data-inbox="list">
-                                    
-
-                                    
-                                    
+                                </div>                            
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive" id="kt_blockui_card">
+                                    <div class="list list-hover min-w-500px" data-inbox="list"></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card-body" style="position: relative;">
+                            <h6 class="text-center">UTILIZAÇÃO DAS SALAS</h6>
+                            <div id="kt_mixed_widget_18_chart" style="height: 250px"></div>
                         </div>
                     </div>
                 </div>
@@ -71,6 +74,8 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function(){
+
+            var percentual_local = 0;            
          
             $('.select2').select2({
                 dropdownPosition: 'below',
@@ -80,12 +85,20 @@
 
                 let id_local = $("#local").val();
                 let id_setor = $("#setor").val();
+                let flag_canhoto = "";
 
                 fetch('sala/setor/'+id_setor+'/local/'+id_local)
                     .then(response => response.json())
                     .then(function(grupos){
                         grupos.forEach(grupo => {
 
+                            if(grupo.flag_canhoto){
+
+                                canhoto = '<span class="label label-lg label-light-primary label-inline">CANHOTO</span>';
+
+                            }else{
+                                canhoto = "";
+                            }
                               
                             $('.list').append('<div class="d-flex align-items-start list-item card-spacer-x py-4" data-inbox="message">' +
                                         '<div class="d-flex align-items-center">' +
@@ -94,11 +107,11 @@
                                                     '<input type="checkbox" class="seleciona">' +
                                                     '<span></span>' +
                                                 '</label>' +
-                                                '<span class="label label-lg label-light-primary label-inline">CANHOTO</span>' +
+                                                '' +
                                             '</div>' +
                                         '</div>' +
                                         '<div class="flex-grow-1 mt-1 mr-2" data-toggle="view">' +
-                                            '<div class="font-weight-bolder mr-2">'+grupo.bloco+' > '+grupo.pavimento+' > '+grupo.nome+'</div>' +
+                                            '<div class="font-weight-bolder mr-2">'+grupo.bloco+' > '+grupo.pavimento+' > '+grupo.nome+'  '+canhoto+'</div>' +
                                         '</div>' +
                                     '</div>');
 
@@ -159,7 +172,6 @@
             $('#local').on('select2:select',function (){
 
                 let setor_elemento = document.getElementById('setor');
-
                 setor_elemento.innerHTML = '';
                 let option = document.createElement("option");
                 option.text = 'Selecione o setor';
@@ -178,7 +190,22 @@
 
                             $('#setor').prop('disabled', false);
 
+                            
+
                         });
+
+                    });
+
+                fetch('local/25/salas/ocupacao')
+                    .then(response => response.json())
+                    .then(function(dados){
+
+                        chart.updateSeries([dados.total]);
+
+                            chart.updateOptions({
+                                labels: ["Ocupado"],
+                            });
+
                     });
             });
 
@@ -233,6 +260,69 @@
                         });
                     });
                 });
+
+               // var _initMixedWidget18 = function () {
+                var element = document.getElementById("kt_mixed_widget_18_chart");
+                var height = parseInt(KTUtil.css(element, 'height'));
+
+                //if (!element) {
+                    //return;
+                //}
+
+                var options = {
+                    series: [percentual_local],
+                    chart: {
+                        height: height,
+                        type: 'radialBar',
+                        offsetY: 0
+                    },
+                    plotOptions: {
+                        radialBar: {
+                            startAngle: -90,
+                            endAngle: 90,
+
+                            hollow: {
+                                margin: 0,
+                                size: "70%"
+                            },
+                            dataLabels: {
+                                showOn: "always",
+                                name: {
+                                    show: true,
+                                    fontSize: "13px",
+                                    fontWeight: "700",
+                                    offsetY: -5,
+                                    color: KTApp.getSettings()['colors']['gray']['gray-500']
+                                },
+                                value: {
+                                    color: KTApp.getSettings()['colors']['gray']['gray-700'],
+                                    fontSize: "30px",
+                                    fontWeight: "700",
+                                    offsetY: -40,
+                                    show: true
+                                }
+                            },
+                            track: {
+                                background: KTApp.getSettings()['colors']['theme']['light']['primary'],
+                                strokeWidth: '100%'
+                            }
+                        }
+                    },
+                    colors: [KTApp.getSettings()['colors']['theme']['base']['primary']],
+                    stroke: {
+                        lineCap: "round",
+                    },
+                    labels: ["Aguardando Dados"]
+                };
+
+                var chart = new ApexCharts(element, options);
+                chart.render();
+            //}
+
+            //_initMixedWidget18();
+
+            
+
         });
     </script>
 @endsection

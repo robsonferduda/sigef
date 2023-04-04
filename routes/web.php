@@ -51,6 +51,7 @@ Route::get('local/novo','LocalController@novo');
 Route::get('local/{id}/editar','LocalController@editar');
 Route::get('local/{id}/excluir','LocalController@destroy');
 Route::get('local/evento','LocalController@localEvento');
+Route::get('local/{local}/salas/ocupacao','LocalController@getOcupacao');
 Route::resource('local','LocalController');
 
 Route::get('pavimentos','PavimentoController@listar');
