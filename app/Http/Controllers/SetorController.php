@@ -24,13 +24,14 @@ class SetorController extends Controller
         $this->breadcrumb['titulo'] = 'Setor';
         $this->breadcrumb['itens'] = array();
 
-        \Session::put('menu_pai','setor');
+        Session::put('menu_pai','setor');
 
         $this->evento = Session::get('evento_id');
     }
 
     public function getSetoresLocal($local)
     {
+        Session::put('id_local', $local);
         $setores = Setor::where('cd_local_prova_lop', $local)->orderBy('nm_setor_set')->get();
 
         return json_encode($setores);

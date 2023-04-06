@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grupo;
 use App\Models\Bloco;
 use App\Models\Pavimento;
 use App\Models\Sala;
@@ -199,11 +200,17 @@ class SalaController extends Controller
 
                     $flag_canhoto = ($sala->cd_tipo_carteira_tic == EnumTipoCarteira::ACADEMICA) ? true : false;
 
+                    $alocado = Grupo::where('cd_evento_eef', $this->evento)->where('cd_sala_sal', $sala->cd_sala_sal)->first();
+
+                    $flag = ($alocado) ? true : false;
+
                     $salas[] = array('id' => $sala->cd_sala_sal,
                                      'nome' =>  $sala->nm_sala_sal,
                                      'pavimento' => $pavimento->nm_pavimento_pav ,
                                      'bloco' => $bloco->nm_bloco_bls,
-                                     'flag_canhoto' => $flag_canhoto);
+                                     'flag_canhoto' => $flag_canhoto,
+                                     'flag_alocado' => $flag,
+                                     'carteiras' => $sala->nu_carteiras_sal);
                 }
             }
         }

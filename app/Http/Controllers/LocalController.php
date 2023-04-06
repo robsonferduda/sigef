@@ -29,7 +29,8 @@ class LocalController extends Controller
 
     public function getOcupacao($local)
     {
-        $dados = array('total' => rand(0,99));
+        $local = Local::find($local);
+        $dados = ($local) ? $local->getOcupacao() : array();
 
         return json_encode($dados);
     }
