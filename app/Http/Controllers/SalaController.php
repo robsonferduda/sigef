@@ -25,7 +25,7 @@ class SalaController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-building';
         $this->breadcrumb['titulo'] = 'Sala';
         $this->breadcrumb['itens'] = array();

@@ -19,7 +19,7 @@ class SetorController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-building';
         $this->breadcrumb['titulo'] = 'Setor';
         $this->breadcrumb['itens'] = array();

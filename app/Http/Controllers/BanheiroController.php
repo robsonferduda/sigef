@@ -20,7 +20,7 @@ class BanheiroController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-toilet';
         $this->breadcrumb['titulo'] = 'Banheiro';
         $this->breadcrumb['itens'] = array();
