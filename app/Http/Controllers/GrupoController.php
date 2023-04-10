@@ -22,7 +22,7 @@ class GrupoController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-users';
         $this->breadcrumb['titulo'] = 'Grupos';
         $this->breadcrumb['itens'] = array();

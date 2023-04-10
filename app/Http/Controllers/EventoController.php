@@ -17,6 +17,7 @@ use Yajra\DataTables\DataTables;
 
 class EventoController extends Controller
 {
+    protected $evento;
     protected $breadcrumb;
 
     public function __construct()
@@ -24,6 +25,8 @@ class EventoController extends Controller
         $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fa-ticket-alt';
         $this->breadcrumb['titulo'] = 'Eventos';
+
+        $this->evento = Session::get('evento_id');
         \Session::put('menu_pai','eventos');
     }
 
@@ -160,7 +163,7 @@ class EventoController extends Controller
         );        
         $breadcrumb = $this->breadcrumb;
 
-        $evento = Evento::find(10);
+        $evento = Evento::find($this->evento);
         $locais_disponiveis = Local::whereNotIn('cd_local_prova_lop', $evento->locais->map->only('cd_local_prova_lop')->toArray())->orderBy('nm_local_prova_lop')->get();
         $locais_selecionados = $evento->locais;
 
@@ -183,7 +186,7 @@ class EventoController extends Controller
         );        
         $breadcrumb = $this->breadcrumb;
 
-        $evento = Evento::find(10);
+        $evento = Evento::find($this->evento);
         $locais_disponiveis = $evento->locais;
         $setores_selecionados = $evento->setores;
 
@@ -192,7 +195,7 @@ class EventoController extends Controller
 
     public function adicionarLocal($id)
     {
-        $evento = Evento::find(10);
+        $evento = Evento::find($this->evento);
         $local = Local::find($id);
 
         $evento->locais()->attach($local);
@@ -203,18 +206,22 @@ class EventoController extends Controller
 
     public function removerLocal($id)
     {
-        $evento = Evento::find(10);
+        $evento = Evento::find($this->evento);
         $local = Local::find($id);
 
-        $evento->locais()->detach($local);
+        if($local->setores->isEmpty()){
+            $evento->locais()->detach($local);
+            Flash::success('<i class="fas fa-check text-white mr-2"></i> Local <strong>'.$local->nm_local_prova_lop.'</strong> removido com sucesso.');
+        }else{
+            Flash::warning('<i class="fas fa-exclamation text-white mr-2"></i> Não é possível excluir este local, ele possui setores vinculados.');
+        }
 
-        Flash::success('<i class="fas fa-check text-white mr-2"></i> Local <strong>'.$local->nm_local_prova_lop.'</strong> removido com sucesso.');
         return redirect('evento/locais')->withInput();
     }
 
     public function adicionarSetor($id)
     {
-        $evento = Evento::find(10);
+        $evento = Evento::find($this->evento);
         $setor = Setor::find($id);
 
         $evento->setores()->attach($setor);
@@ -225,7 +232,7 @@ class EventoController extends Controller
 
     public function removerSetor($id)
     {
-        $evento = Evento::find(10);
+        $evento = Evento::find($this->evento);
         $setor = Setor::find($id);
 
         $evento->setores()->detach($setor);

@@ -19,7 +19,7 @@ class SetorController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-building';
         $this->breadcrumb['titulo'] = 'Setor';
         $this->breadcrumb['itens'] = array();
@@ -31,7 +31,7 @@ class SetorController extends Controller
 
     public function getSetoresLocal($local)
     {
-        Session::put('id_local', $local);
+        //Session::put('id_local', $local);
         $setores = Setor::where('cd_local_prova_lop', $local)->orderBy('nm_setor_set')->get();
 
         return json_encode($setores);
