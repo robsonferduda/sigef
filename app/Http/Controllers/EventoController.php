@@ -209,7 +209,7 @@ class EventoController extends Controller
         $evento = Evento::find($this->evento);
         $local = Local::find($id);
 
-        if($local->setores->isEmpty()){
+        if(!$local->verificaLocal($this->evento, $id)){
             $evento->locais()->detach($local);
             Flash::success('<i class="fas fa-check text-white mr-2"></i> Local <strong>'.$local->nm_local_prova_lop.'</strong> removido com sucesso.');
         }else{

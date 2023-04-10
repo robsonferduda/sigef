@@ -42,4 +42,16 @@ class Local extends Model
 
         return $ocupacao;
     }
+
+    public function verificaLocal($evento, $local)
+    {
+        $sql = "SELECT count(*) AS total 
+                FROM espaco_fisico.setor_evento_see t1 
+                LEFT JOIN espaco_fisico.setor_set t2 ON t2.cd_setor_set = t1.cd_setor_set 
+                LEFT JOIN espaco_fisico.local_prova_lop t3 ON t3.cd_local_prova_lop = t2.cd_local_prova_lop 
+                WHERE t1.cd_evento_eef = $evento
+                AND t2.cd_local_prova_lop = $local";
+
+        return DB::connection('pgsql')->select(DB::raw($sql))[0]->total;
+    }
 }
