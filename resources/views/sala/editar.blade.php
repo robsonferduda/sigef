@@ -20,30 +20,45 @@
                             <input type="text" name="nome" value="{{ $sala->nm_sala_sal }}" class="form-control" placeholder="Nome da Sala"/>
                         </div>
                         <div class="col-lg-6">
-                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
-                            <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
-                                <option value="">Selecione o setor</option>
-                                @foreach($setores as $setor)
-                                    <option {!!  $setor->cd_setor_set == $sala->pavimento->bloco->cd_setor_set ? 'selected': '' !!} value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                            <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
+                            <select name="local" class="form-control select2 select2-hidden-accessible local" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
+                                <option value="">Selecione o local</option>
+                                @foreach($locais as $local)
+                                    <option {!! $local->cd_local_prova_lop == $sala->pavimento->bloco->setor->cd_local_prova_lop ? 'selected' : '' !!} value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <label for="select2">Bloco <span class="text-danger">Obrigatório</span></label>
-                            <select name="bloco" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
-                                <option value="">Selecione o bloco</option>
+                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
+                            <select name="setor" class="form-control select2 select2-hidden-accessible setor" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
+                                <option value="">Selecione o setor</option>
+                                @foreach($setores as $setor)
+                                    <option {!!  $setor->cd_setor_set == $sala->pavimento->bloco->cd_setor_set ? 'selected': '' !!} value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-lg-6">
-                            <label for="select2">Pavimento <span class="text-danger">Obrigatório</span></label>
-                            <select name="pavimento" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="pavimento">
-                                <option value="">Selecione o pavimento</option>
+                            <label for="select2">Bloco <span class="text-danger">Obrigatório</span></label>
+                            <select name="bloco" class="form-control select2 select2-hidden-accessible bloco" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
+                                <option value="">Selecione o bloco</option>
+                                @foreach($blocos as $bloco)
+                                    <option  {!! $bloco->cd_bloco_setor_bls == $sala->pavimento->cd_bloco_setor_bls ? 'selected' : '' !!} value="{{ $bloco->cd_bloco_setor_bls }}">{{ $bloco->nm_bloco_bls }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label for="select2">Pavimento <span class="text-danger">Obrigatório</span></label>
+                            <select name="pavimento" class="form-control select2 select2-hidden-accessible pavimento" style="width: 100%;" tabindex="-1" aria-hidden="true" id="pavimento">
+                                <option value="">Selecione o pavimento</option>
+                                @foreach($pavimentos as $pavimento)
+                                    <option  {!! $pavimento->cd_pavimento_pav == $sala->cd_pavimento_pav ? 'selected' : '' !!} value="{{ $pavimento->cd_pavimento_pav }}">{{ $pavimento->nm_pavimento_pav }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-lg-6">
                             <label for="select2">Tipo de Carteira <span class="text-danger">Obrigatório</span></label>
                             <select name="tipo_carteira" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="tipo_carteira">
@@ -53,6 +68,8 @@
                                 @endforeach
                             </select>
                         </div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-lg-6">
                             <label>Número de Carteiras</label>
                             <input type="number" name="qtd_cardeiras" value="{{ $sala->nu_carteiras_sal }}" class="form-control" placeholder="Número de Carteiras"/>
@@ -93,6 +110,13 @@
                                 }
                             }
                         },
+                        local: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'O campo "Local" é obrigatório.'
+                                }
+                            }
+                        },
                         setor: {
                             validators: {
                                 notEmpty: {
@@ -127,80 +151,6 @@
                     }
                 }
             );
-
-            $('#setor').on('select2:select',function (){
-
-                buscarBloco(this.value);
-
-            });
-
-
-            var buscarBloco = function (setor) {
-
-                let bloco_elemento = document.getElementById('bloco');
-
-                bloco_elemento.innerHTML = '';
-                let option = document.createElement("option");
-                option.text = 'Selecione o bloco';
-                option.value = '';
-                bloco_elemento.appendChild(option);
-
-                fetch('../../blocos/setor/'+setor)
-                    .then(response => response.json())
-                    .then(function(blocos){
-                        blocos.forEach(bloco => {
-
-                            let option = document.createElement("option");
-                            option.text = bloco.nm_bloco_bls;
-                            option.value = bloco.cd_bloco_setor_bls;
-                            bloco_elemento.appendChild(option);
-
-                            if(bloco.cd_bloco_setor_bls == {!! $sala->pavimento->cd_bloco_setor_bls !!}) {
-                                option.selected = true;
-                                buscarPavimento(bloco.cd_bloco_setor_bls);
-                            }
-
-                            $('#bloco').prop('disabled', false);
-
-                        });
-                    });
-            }
-
-            buscarBloco($("#setor").val());
-
-            $('#bloco').on('select2:select',function (){
-                buscarBloco(this.value);
-            });
-
-            var buscarPavimento = function (bloco) {
-                let pavimento_elemento = document.getElementById('pavimento');
-
-                pavimento_elemento.innerHTML = '';
-                let option = document.createElement("option");
-                option.text = 'Selecione o pavimento';
-                option.value = '';
-                pavimento_elemento.appendChild(option);
-
-                fetch('../../pavimentos/bloco/'+bloco)
-                    .then(response => response.json())
-                    .then(function(pavimentos){
-                        pavimentos.forEach(pavimento => {
-
-                            let option = document.createElement("option");
-                            option.text = pavimento.nm_pavimento_pav;
-                            option.value = pavimento.cd_pavimento_pav;
-                            pavimento_elemento.appendChild(option);
-
-                            if(pavimento.cd_pavimento_pav == {!! $sala->pavimento->cd_pavimento_pav !!}) {
-                                option.selected = true;
-                            }
-
-                            $('#pavimento').prop('disabled', false);
-
-                        });
-                    });
-            }
-
         });
     </script>
 @endsection

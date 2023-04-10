@@ -84,12 +84,20 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
-                            <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="select2">
-                                <option value="">Selecione o setor</option>
-                                @foreach($setores as $setor)
-                                    <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                            <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
+                            <select name="local" class="form-control select2 select2-hidden-accessible local" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
+                                <option value="">Selecione o local</option>
+                                @foreach($locais as $local)
+                                    <option value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
+                            <select name="setor" disabled class="form-control select2 select2-hidden-accessible setor" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
+                                <option value="">Selecione o setor</option>
                             </select>
                         </div>
                     </div>
@@ -125,6 +133,13 @@
                             validators: {
                                 notEmpty: {
                                     message: 'O campo "Endereço de Acesso" é obrigatório.'
+                                }
+                            }
+                        },
+                        local: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'O campo "Local" é obrigatório.'
                                 }
                             }
                         },

@@ -17,7 +17,7 @@ class LocalController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-map-marker';
         $this->breadcrumb['titulo'] = 'Local';
         $this->breadcrumb['itens'] = array();

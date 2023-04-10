@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bloco;
+use App\Models\Local;
 use App\Models\Pavimento;
 use App\Models\Setor;
 use App\Utils;
@@ -19,7 +20,7 @@ class PavimentoController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-building';
         $this->breadcrumb['titulo'] = 'Pavimento';
         $this->breadcrumb['itens'] = array();
@@ -34,12 +35,12 @@ class PavimentoController extends Controller
         Session::put('menu_item','pavimentos');
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
         if($request->ajax()) {
 
             $nome  = $request->nome;
+            $local = $request->local;
             $setor = $request->setor;
             $bloco  = $request->bloco;
 
@@ -51,6 +52,13 @@ class PavimentoController extends Controller
                 })->when($setor, function ($query) use ($setor) {
                     $query->whereHas('bloco', function ($query) use ($setor){
                         $query->where('cd_setor_set', $setor);
+                    });
+                })
+                ->when($local, function ($query) use ($local) {
+                    $query->whereHas('bloco', function ($query) use ($local){
+                        $query->whereHas('setor', function ($query) use ($local){
+                            $query->where('cd_local_prova_lop', $local);
+                        });
                     });
                 })
                 ->orderBy('nm_pavimento_pav')->get();
@@ -65,6 +73,9 @@ class PavimentoController extends Controller
                 ->addColumn('bloco', function ($pavimento) {
                     return $pavimento->bloco->nm_bloco_bls;
                 })
+                ->addColumn('local', function ($pavimento) {
+                    return $pavimento->bloco->setor->local->nm_local_prova_lop;
+                })
                 ->addColumn('setor', function ($pavimento) {
                     return $pavimento->bloco->setor->nm_setor_set;
                 })
@@ -77,7 +88,7 @@ class PavimentoController extends Controller
                 ->make(true);
         }
 
-        return view('pavimento.pavimentos', compact('breadcrumb', 'blocos', 'setores'));
+        return view('pavimento.pavimentos', compact('breadcrumb', 'locais'));
     }
 
     public function novo(Request $request)
@@ -87,10 +98,9 @@ class PavimentoController extends Controller
 
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
-        return view('pavimento.novo', compact('breadcrumb', 'blocos', 'setores'));
+        return view('pavimento.novo', compact('breadcrumb', 'locais'));
     }
 
     public function salvar(Request $request)
@@ -118,14 +128,15 @@ class PavimentoController extends Controller
     public function editar(Request $request, $pavimento)
     {
         /* Marcação de Menus */
-        Session::put('menu_item','setores');
+        Session::put('menu_item','pavimentos');
 
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
-
         $pavimento = Pavimento::find($pavimento);
+
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
+        $blocos = Bloco::orderBy('nm_bloco_bls')->where('cd_setor_set', $pavimento->bloco->cd_setor_set)->get();
+        $setores = Setor::orderBy('nm_abrev_setor_set')->where('cd_local_prova_lop', $pavimento->bloco->setor->cd_local_prova_lop)->get();
 
         if($request->post()) {
             try{
@@ -148,7 +159,7 @@ class PavimentoController extends Controller
 
         }
 
-        return view('pavimento.editar', compact('breadcrumb', 'blocos', 'setores', 'pavimento'));
+        return view('pavimento.editar', compact('breadcrumb', 'locais', 'blocos', 'setores', 'pavimento'));
     }
 
     public function buscarPavimentosPorBloco($bloco)

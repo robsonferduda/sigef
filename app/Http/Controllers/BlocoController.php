@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bloco;
+use App\Models\Local;
 use App\Models\Setor;
 use App\Utils;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Laracasts\Flash\Flash;
 use phpDocumentor\Reflection\Types\Boolean;
 use Yajra\DataTables\DataTables;
+use function foo\func;
 
 class BlocoController extends Controller
 {
@@ -18,7 +20,7 @@ class BlocoController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-building';
         $this->breadcrumb['titulo'] = 'Bloco';
         $this->breadcrumb['itens'] = array();
@@ -33,12 +35,13 @@ class BlocoController extends Controller
         Session::put('menu_item','blocos');
         $breadcrumb = $this->breadcrumb;
 
-        $setores = Setor::orderBy('nm_abrev_setor_set')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
         if($request->ajax()) {
 
             $nome  = $request->nome;
             $setor = $request->setor;
+            $local = $request->local;
             $muro =  filter_var($request->muro, FILTER_VALIDATE_BOOLEAN);
             $guarita =  filter_var($request->guarita, FILTER_VALIDATE_BOOLEAN);
             $elevador =  filter_var($request->elevador, FILTER_VALIDATE_BOOLEAN);
@@ -55,6 +58,11 @@ class BlocoController extends Controller
                 })
                 ->when($setor, function ($query) use ($setor) {
                     return $query->where('cd_setor_set', $setor);
+                })
+                ->when($local, function ($query) use ($local) {
+                    $query->whereHas('setor', function ($query) use ($local){
+                        $query->where('cd_local_prova_lop', $local);
+                    });
                 })
                 ->when($muro, function ($query) use ($muro) {
                     return $query->where('fl_muro_bls', $muro);
@@ -91,6 +99,9 @@ class BlocoController extends Controller
                 })
                 ->addColumn('bloco', function ($bloco) {
                     return $bloco->nm_bloco_bls;
+                })
+                ->addColumn('local', function ($bloco) {
+                    return $bloco->setor->local->nm_local_prova_lop;
                 })
                 ->addColumn('setor', function ($bloco) {
                     return $bloco->setor->nm_abrev_setor_set;
@@ -134,7 +145,7 @@ class BlocoController extends Controller
                 ->make(true);
         }
 
-        return view('bloco.blocos', compact('breadcrumb', 'setores'));
+        return view('bloco.blocos', compact('breadcrumb', 'locais'));
     }
 
     public function novo(Request $request)
@@ -142,11 +153,11 @@ class BlocoController extends Controller
         /* Marcação de Menus */
         Session::put('menu_item','locais');
 
-        $setores = Setor::orderBy('nm_abrev_setor_set')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
         $breadcrumb = $this->breadcrumb;
 
-        return view('bloco.novo', compact('breadcrumb', 'setores'));
+        return view('bloco.novo', compact('breadcrumb', 'locais'));
     }
 
     public function salvar(Request $request)
@@ -220,9 +231,10 @@ class BlocoController extends Controller
 
         }
 
-        $setores = Setor::orderBy('nm_abrev_setor_set')->get();
+        $setores = Setor::orderBy('nm_abrev_setor_set')->where('cd_local_prova_lop', $bloco->setor->cd_local_prova_lop)->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
-        return view('bloco.editar', compact('breadcrumb', 'bloco', 'setores'));
+        return view('bloco.editar', compact('breadcrumb', 'bloco', 'locais', 'setores'));
     }
 
     public function buscarBlocosPorSetor($setor)

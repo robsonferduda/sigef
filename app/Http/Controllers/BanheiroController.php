@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banheiro;
 use App\Models\Bloco;
+use App\Models\Local;
 use App\Models\Pavimento;
 use App\Models\Setor;
 use App\Utils;
@@ -19,7 +20,7 @@ class BanheiroController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->breadcrumb['icone'] = 'fas fa-toilet';
         $this->breadcrumb['titulo'] = 'Banheiro';
         $this->breadcrumb['itens'] = array();
@@ -34,13 +35,13 @@ class BanheiroController extends Controller
         Session::put('menu_item','banheiros');
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
-        $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
         if($request->ajax()) {
 
             $nome  = $request->nome;
+
+            $local = $request->local;
             $setor = $request->setor;
             $bloco = $request->bloco;
             $pavimento = $request->pavimento;
@@ -63,7 +64,17 @@ class BanheiroController extends Controller
                             $query->where('cd_setor_set', $setor);
                         });
                     });
-                })->get();
+                })
+                ->when($local, function ($query) use ($local) {
+                    $query->whereHas('pavimento', function ($query) use ($local){
+                        $query->whereHas('bloco', function ($query) use ($local){
+                            $query->whereHas('setor', function ($query) use ($local){
+                                $query->where('cd_local_prova_lop', $local);
+                            });
+                        });
+                    });
+                })
+                ->get();
 
             return DataTables::of($banheiros)
                 ->addColumn('codigo', function ($banheiro) {
@@ -74,6 +85,9 @@ class BanheiroController extends Controller
                 })
                 ->addColumn('bloco', function ($banheiro) {
                     return $banheiro->pavimento->bloco->nm_bloco_bls;
+                })
+                ->addColumn('local', function ($sala) {
+                    return $sala->pavimento->bloco->setor->local->nm_local_prova_lop;
                 })
                 ->addColumn('setor', function ($banheiro) {
                     return $banheiro->pavimento->bloco->setor->nm_setor_set;
@@ -95,7 +109,7 @@ class BanheiroController extends Controller
                 ->make(true);
         }
 
-        return view('banheiro.banheiros', compact('breadcrumb', 'blocos', 'setores', 'pavimentos'));
+        return view('banheiro.banheiros', compact('breadcrumb', 'locais'));
     }
 
     public function novo(Request $request)
@@ -105,10 +119,9 @@ class BanheiroController extends Controller
 
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
 
-        return view('banheiro.novo', compact('breadcrumb', 'blocos', 'setores'));
+        return view('banheiro.novo', compact('breadcrumb', 'locais'));
     }
 
     public function salvar(Request $request)
@@ -143,10 +156,12 @@ class BanheiroController extends Controller
 
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
-
         $banheiro = Banheiro::find($banheiro);
+
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
+        $setores = Setor::orderBy('nm_abrev_setor_set')->where('cd_local_prova_lop', $banheiro->pavimento->bloco->setor->cd_local_prova_lop)->get();
+        $blocos = Bloco::orderBy('nm_bloco_bls')->where('cd_setor_set', $banheiro->pavimento->bloco->cd_setor_set)->get();
+        $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->where('cd_pavimento_pav', $banheiro->cd_pavimento_pav)->get();
 
         if($request->post()) {
 
@@ -174,7 +189,7 @@ class BanheiroController extends Controller
 
         }
 
-        return view('banheiro.editar', compact('breadcrumb', 'blocos', 'setores', 'banheiro'));
+        return view('banheiro.editar', compact('breadcrumb', 'blocos', 'pavimentos', 'locais', 'setores', 'banheiro'));
     }
 
 
