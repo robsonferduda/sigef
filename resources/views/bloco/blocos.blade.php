@@ -24,15 +24,23 @@
                                     <input type="text" name="nome_bloco" id="nome" class="form-control" placeholder="Nome ou parte do nome"/>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="select2">Setor</label>
-                                    <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="select2">
-                                        <option value="">Selecione o setor</option>
-                                        @foreach($setores as $setor)
-                                            <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                                    <label for="select2">Local</label>
+                                    <select name="local" class="form-control select2 select2-hidden-accessible local" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
+                                        <option value="">Selecione o local</option>
+                                        @foreach($locais as $local)
+                                            <option value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-4">
+                                    <label for="select2">Setor</label>
+                                    <select name="setor" disabled class="form-control select2 select2-hidden-accessible setor" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
+                                        <option value="">Selecione o setor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
                                     <br>
                                     <div class="checkbox-inline">
                                         <label class="checkbox">
@@ -82,7 +90,6 @@
                                         </label>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="card-footer center">
@@ -95,8 +102,9 @@
                     <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Bloco</th>
+                        <th>Local</th>
                         <th>Setor</th>
+                        <th>Bloco</th>
                         <th>Endereço de Acesso</th>
                         <th>Muro?</th>
                         <th>Guarita?</th>
@@ -135,7 +143,7 @@
                 "processing": true,
                 "paginate": false,
                 "serverSide": true,
-                "order": [[ 2, "asc" ], [ 1, "asc"]],
+                "order": [[ 1, "asc"], [ 2, "asc" ],[ 3, "asc" ]],
                 "bFilter": false,
                 "ajax":{
                     "url": "{{ url('blocos') }}",
@@ -143,23 +151,25 @@
                     "type": "GET",
                     "data": function (d) {
                         d._token   =  "{{csrf_token()}}",
-                        d.nome     = $('input[name="nome_bloco"]').val(),
-                        d.setor    = $('select[name="setor"]').val(),
-                        d.muro = $('input[name="muro"]').is(":checked"),
-                        d.guarita = $('input[name="guarita"]').is(":checked"),
-                        d.elevador = $('input[name="elevador"]').is(":checked"),
-                        d.portao = $('input[name="portao"]').is(":checked"),
-                        d.rampa = $('input[name="rampa"]').is(":checked"),
-                        d.vigilancia = $('input[name="vigilancia"]').is(":checked"),
-                        d.monitoramento = $('input[name="monitoramento"]').is(":checked"),
-                        d.estacionamento = $('input[name="estacionamento"]').is(":checked"),
-                        d.wifi = $('input[name="wifi"]').is(":checked")
+                        d.nome     = $('input[name="nome_bloco"]').val();
+                        d.local    = $('select[name="local"]').val();
+                        d.setor    = $('select[name="setor"]').val();
+                        d.muro = $('input[name="muro"]').is(":checked");
+                        d.guarita = $('input[name="guarita"]').is(":checked");
+                        d.elevador = $('input[name="elevador"]').is(":checked");
+                        d.portao = $('input[name="portao"]').is(":checked");
+                        d.rampa = $('input[name="rampa"]').is(":checked");
+                        d.vigilancia = $('input[name="vigilancia"]').is(":checked");
+                        d.monitoramento = $('input[name="monitoramento"]').is(":checked");
+                        d.estacionamento = $('input[name="estacionamento"]').is(":checked");
+                        d.wifi = $('input[name="wifi"]').is(":checked");
                     }
                 },
                 "columns": [
                     { data: "codigo" },
-                    { data: "bloco" },
+                    { data: "local" },
                     { data: "setor" },
+                    { data: "bloco" },
                     { data: "endereco" },
                     { data: "muro" },
                     { data: "guarita" },
@@ -177,6 +187,7 @@
             $('.btn-limpar').click(function (){
                 $('input[name="nome_bloco"]').val('');
                 $('select[name="setor"]').val('').trigger('change');
+                $('select[name="local"]').val('').trigger('change');
 
                 $('input[name="muro"]').prop("checked", false);
                 $('input[name="guarita"]').prop("checked", false);

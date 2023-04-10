@@ -6,7 +6,7 @@ $(document).on('click', '.btn-confirmar', function(e) {
     e.preventDefault();
     url = $(this).attr('href');
     text = $(this).text().trim();
- 
+
     Swal.fire({
         title: "Tem certeza que deseja excluir "+text+"?",
         text: "Essa operação não pode ser revertida",
@@ -84,12 +84,12 @@ $.ajax({
             confirmButtonColor: "#28a745",
             confirmButtonText: "Ok"
         });
-        
+
     }
 });
 
 $("#btn-alterar-evento").click(function(e) {
-    
+
     var evento = $("#evento").val();
     var token = $('meta[name="csrf-token"]').attr('content');
     $(".error-evento").empty();
@@ -109,3 +109,83 @@ $("#btn-alterar-evento").click(function(e) {
         });
     }
 });
+
+$('.local').on('select2:select',function (){
+
+    let setor_elemento = document.getElementById('setor');
+    setor_elemento.innerHTML = '';
+    let option = document.createElement("option");
+    option.text = 'Selecione o setor';
+    option.value = '';
+    setor_elemento.appendChild(option);
+
+    fetch(host+'/setor/local/'+this.value)
+        .then(response => response.json())
+        .then(function(setores){
+            setores.forEach(setor => {
+
+                let option = document.createElement("option");
+                option.text = setor.nm_setor_set;
+                option.value = setor.cd_setor_set;
+                setor_elemento.appendChild(option);
+
+                $('.setor').prop('disabled', false);
+
+            });
+
+        });
+});
+
+$('.setor').on('select2:select',function (){
+
+    let bloco_elemento = document.getElementById('bloco');
+
+    bloco_elemento.innerHTML = '';
+    let option = document.createElement("option");
+    option.text = 'Selecione o bloco';
+    option.value = '';
+    bloco_elemento.appendChild(option);
+
+    fetch(host+'/blocos/setor/'+this.value)
+        .then(response => response.json())
+        .then(function(blocos){
+            blocos.forEach(bloco => {
+
+                let option = document.createElement("option");
+                option.text = bloco.nm_bloco_bls;
+                option.value = bloco.cd_bloco_setor_bls;
+                bloco_elemento.appendChild(option);
+
+                $('.bloco').prop('disabled', false);
+
+            });
+        });
+});
+
+
+$('#bloco').on('select2:select',function (){
+
+    let pavimento_elemento = document.getElementById('pavimento');
+
+    pavimento_elemento.innerHTML = '';
+    let option = document.createElement("option");
+    option.text = 'Selecione o pavimento';
+    option.value = '';
+    pavimento_elemento.appendChild(option);
+
+    fetch(host+'/pavimentos/bloco/'+this.value)
+        .then(response => response.json())
+        .then(function(pavimentos){
+            pavimentos.forEach(pavimento => {
+
+                let option = document.createElement("option");
+                option.text = pavimento.nm_pavimento_pav;
+                option.value = pavimento.cd_pavimento_pav;
+                pavimento_elemento.appendChild(option);
+
+                $('#pavimento').prop('disabled', false);
+
+            });
+        });
+});
+

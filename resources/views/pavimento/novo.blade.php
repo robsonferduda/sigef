@@ -22,22 +22,29 @@
                         <div class="col-lg-6">
                         </div>
                     </div>
-
                     <div class="form-group row">
                         <div class="col-lg-6">
-                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
-                            <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
-                                <option value="">Selecione o setor</option>
-                                @foreach($setores as $setor)
-                                    <option value="{{ $setor->cd_setor_set }}">{{ $setor->nm_abrev_setor_set }}</option>
+                            <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
+                            <select name="local" class="form-control select2 select2-hidden-accessible local" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
+                                <option value="">Selecione o local</option>
+                                @foreach($locais as $local)
+                                    <option value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-6">
+                            <label for="select2">Setor <span class="text-danger">Obrigatório</span></label>
+                            <select name="setor" disabled class="form-control select2 select2-hidden-accessible setor" style="width: 100%;" tabindex="-1" aria-hidden="true"  id="setor">
+                                <option value="">Selecione o setor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
                             <label for="select2">Bloco <span class="text-danger">Obrigatório</span></label>
-                            <select name="bloco" disabled class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
+                            <select name="bloco" disabled class="form-control select2 select2-hidden-accessible bloco" style="width: 100%;" tabindex="-1" aria-hidden="true" id="bloco">
                                 <option value="">Selecione o bloco</option>
                             </select>
                         </div>
@@ -70,6 +77,13 @@
                                 }
                             }
                         },
+                        local: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'O campo "Local" é obrigatório.'
+                                }
+                            }
+                        },
                         setor: {
                             validators: {
                                 notEmpty: {
@@ -97,33 +111,6 @@
                     }
                 }
             );
-
-            $('#setor').on('select2:select',function (){
-
-                let bloco_elemento = document.getElementById('bloco');
-
-                bloco_elemento.innerHTML = '';
-                let option = document.createElement("option");
-                option.text = 'Selecione o bloco';
-                option.value = '';
-                bloco_elemento.appendChild(option);
-
-                fetch('../blocos/setor/'+this.value)
-                    .then(response => response.json())
-                    .then(function(blocos){
-                        blocos.forEach(bloco => {
-
-                            let option = document.createElement("option");
-                            option.text = bloco.nm_bloco_bls;
-                            option.value = bloco.cd_bloco_setor_bls;
-                            bloco_elemento.appendChild(option);
-
-                            $('#bloco').prop('disabled', false);
-
-                        });
-                    });
-            });
-
         });
     </script>
 @endsection

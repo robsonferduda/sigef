@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bloco;
+use App\Models\Local;
 use App\Models\Pavimento;
 use App\Models\Sala;
 use App\Models\Setor;
@@ -38,14 +39,14 @@ class SalaController extends Controller
         Session::put('menu_item','salas');
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
-        $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
         $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
         if($request->ajax()) {
 
             $nome  = $request->nome;
+
+            $local = $request->local;
             $setor = $request->setor;
             $bloco = $request->bloco;
             $pavimento = $request->pavimento;
@@ -69,6 +70,15 @@ class SalaController extends Controller
                         });
                     });
                 })
+                ->when($local, function ($query) use ($local) {
+                    $query->whereHas('pavimento', function ($query) use ($local){
+                        $query->whereHas('bloco', function ($query) use ($local){
+                            $query->whereHas('setor', function ($query) use ($local){
+                                $query->where('cd_local_prova_lop', $local);
+                            });
+                        });
+                    });
+                })
                 ->when($tipoCarteira, function ($query) use ($tipoCarteira) {
                     return $query->where('cd_tipo_carteira_tic', $tipoCarteira);
                 })
@@ -83,6 +93,9 @@ class SalaController extends Controller
                 })
                 ->addColumn('bloco', function ($sala) {
                     return $sala->pavimento->bloco->nm_bloco_bls;
+                })
+                ->addColumn('local', function ($sala) {
+                    return $sala->pavimento->bloco->setor->local->nm_local_prova_lop;
                 })
                 ->addColumn('setor', function ($sala) {
                     return $sala->pavimento->bloco->setor->nm_setor_set;
@@ -105,7 +118,7 @@ class SalaController extends Controller
                 ->make(true);
         }
 
-        return view('sala.salas', compact('breadcrumb', 'blocos', 'setores', 'pavimentos', 'tiposCarteira'));
+        return view('sala.salas', compact('breadcrumb', 'locais', 'tiposCarteira'));
     }
 
     public function novo(Request $request)
@@ -115,11 +128,10 @@ class SalaController extends Controller
 
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
         $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
-        return view('sala.novo', compact('breadcrumb', 'blocos', 'setores', 'tiposCarteira'));
+        return view('sala.novo', compact('breadcrumb', 'locais', 'tiposCarteira'));
     }
 
     public function salvar(Request $request)
@@ -152,11 +164,14 @@ class SalaController extends Controller
 
         $breadcrumb = $this->breadcrumb;
 
-        $blocos = Bloco::orderBy('nm_bloco_bls')->get();
-        $setores = Setor::orderBy('nm_setor_set')->get();
-        $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
-
         $sala = Sala::find($sala);
+
+        $locais = Local::orderBy('nm_local_prova_lop')->get();
+        $setores = Setor::orderBy('nm_abrev_setor_set')->where('cd_local_prova_lop', $sala->pavimento->bloco->setor->cd_local_prova_lop)->get();
+        $blocos = Bloco::orderBy('nm_bloco_bls')->where('cd_setor_set', $sala->pavimento->bloco->cd_setor_set)->get();
+        $pavimentos = Pavimento::orderBy('nm_pavimento_pav')->where('cd_pavimento_pav', $sala->cd_pavimento_pav)->get();
+
+        $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
         if($request->post()) {
 
@@ -182,7 +197,7 @@ class SalaController extends Controller
             }
         }
 
-        return view('sala.editar', compact('breadcrumb', 'blocos', 'setores', 'sala', 'tiposCarteira'));
+        return view('sala.editar', compact('breadcrumb', 'locais','blocos', 'pavimentos' ,'setores', 'sala', 'tiposCarteira'));
     }
 
     public function getSalas($setor, $local)
@@ -191,7 +206,7 @@ class SalaController extends Controller
         $salas = array();
 
         $setor = Setor::with('blocos')->where('cd_local_prova_lop', $local)->where('cd_setor_set', $setor)->get();
-        
+
         foreach($setor->first()->blocos as $bloco){
             foreach($bloco->pavimentos as $pavimento){
 

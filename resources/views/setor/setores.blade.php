@@ -59,9 +59,9 @@
                     <tr>
                         <th>Código</th>
                         <th>Código Único</th>
+                        <th>Local</th>
                         <th>Setor Abreviado</th>
                         <th>Setor</th>
-                        <th>Local</th>
                         <th>Rede de Ensino</th>
                         <th class="box-btn-acoes">Ações</th>
                     </tr>
@@ -94,7 +94,7 @@
                 "processing": true,
                 "paginate": true,
                 "serverSide": true,
-                "order": [[ 2, "asc" ]],
+                "order": [[ 2, "asc" ],[ 3, "asc" ]],
                 "bFilter": false,
                 "ajax":{
                     "url": "{{ url('setores') }}",
@@ -110,9 +110,9 @@
                 "columns": [
                     { data: "codigo" },
                     { data: "codigo_unico" },
+                    { data: "local" },
                     { data: "setor_abrev" },
                     { data: "setor" },
-                    { data: "local" },
                     { data: "rede_ensino" },
                     { data: "acoes" },
                 ]
