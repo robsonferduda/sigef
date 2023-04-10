@@ -44,6 +44,8 @@ Route::post('evento/alterar','EventoController@alterar');
 Route::resource('evento','EventoController');
 
 Route::get('grupos','GrupoController@index');
+Route::post('grupos/alocar','GrupoController@alocar');
+Route::post('grupos/desalocar','GrupoController@desalocar');
 Route::resource('grupo','GrupoController');
 
 Route::get('locais','LocalController@listar');

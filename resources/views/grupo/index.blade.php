@@ -8,7 +8,7 @@
                     <span class="d-block text-muted pt-2 font-size-sm">Listagem de Grupos do Espaço Físico</span></h3>
                 </div>
                 <div class="card-toolbar">                   
-                    <a href="{{ url('grupo/create') }}" class="btn btn-primary font-weight-bolder"><i class="fa fa-plus"></i> Novo</a>
+                    <a href="{{ url('salas') }}" class="btn btn-info font-weight-bolder"><i class="fas fa-list"></i> Salas</a>
                 </div>
             </div>
             <div class="card-body">
@@ -21,11 +21,12 @@
                             <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-md-3">
+                                        <input type="hidden" value="{{ (Session::get('id_local')) ? Session::get('id_local') : "0" }}" id="local_session">
                                         <label for="select2">Local <span class="text-danger">Obrigatório</span></label>
                                         <select name="setor" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="local">
-                                            <option value="">Selecione o local</option>
+                                            <option value="0">Selecione o local</option>
                                             @foreach($locais as $local)
-                                                <option value="{{ $local->cd_local_prova_lop }}">{{ $local->nm_local_prova_lop }}</option>
+                                                <option value="{{ $local->cd_local_prova_lop }}" {{ ( Session::get('id_local') == $local->cd_local_prova_lop) ? 'selected' : '' }}>{{ $local->nm_local_prova_lop }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -50,7 +51,9 @@
                                             <option value="">Selecione o pavimento</option>
                                         </select>
                                     </div>
-
+                                    <div class="col-md-12 mt-3">
+                                        <p><span class="label label-lg label-light-primary label-inline">A taxa de ocupação padrão para os grupos neste evento é de 80%</span></p>
+                                    </div>
                                 </div>                            
                             </div>
                             <div class="card-body p-0">
@@ -61,10 +64,63 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card-body" style="position: relative;">
-                            <h6 class="text-center">UTILIZAÇÃO DAS SALAS</h6>
-                            <div id="kt_mixed_widget_18_chart" style="height: 250px"></div>
-                        </div>
+                        <div id="kt_mixed_widget_18_chart" style="height: 250px"></div>
+                            
+                            <div class="col bg-light-primary px-6 py-8 rounded-xl mr-7 mb-7" style="margin-top: -80px">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Media/Equalizer.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                    <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5"></rect>
+                                                    <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5"></rect>
+                                                    <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5"></rect>
+                                                    <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5"></rect>
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <span class="text-primary mr-3 mt-5 total_carteiras" style="font-size: 35px;">--</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p class="text-primary font-weight-bold font-size-h6">CARTEIRAS DISPONÍVEIS</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col bg-light-success px-6 py-8 rounded-xl mr-7 mb-7">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="svg-icon svg-icon-3x svg-icon-success d-block my-2">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Media/Equalizer.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                    <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5"></rect>
+                                                    <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5"></rect>
+                                                    <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5"></rect>
+                                                    <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5"></rect>
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <span class="text-success mr-3 mt-5 total_utilizado" style="font-size: 35px;">--</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p class="text-success font-weight-bold font-size-h6">CARTEIRAS SELECIONADAS</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                       
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -75,7 +131,11 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            var percentual_local = 0;            
+            var percentual_local = 0;    
+            var token = $('meta[name="csrf-token"]').attr('content');  
+            var local = $("#local_session").val();
+            
+            atualizaCarteiras(local);
          
             $('.select2').select2({
                 dropdownPosition: 'below',
@@ -86,6 +146,8 @@
                 let id_local = $("#local").val();
                 let id_setor = $("#setor").val();
                 let flag_canhoto = "";
+
+                $('.list').empty();
 
                 fetch('sala/setor/'+id_setor+'/local/'+id_local)
                     .then(response => response.json())
@@ -99,19 +161,27 @@
                             }else{
                                 canhoto = "";
                             }
+
+                            if(grupo.flag_alocado){
+                                checado = 'checked';
+                            }else{
+                                checado = '';
+                            }
                               
                             $('.list').append('<div class="d-flex align-items-start list-item card-spacer-x py-4" data-inbox="message">' +
                                         '<div class="d-flex align-items-center">' +
                                             '<div class="d-flex align-items-center mr-3" data-inbox="actions">' +
                                                 '<label class="checkbox checkbox-inline checkbox-primary flex-shrink-0 mr-3">' +
-                                                    '<input type="checkbox" class="seleciona">' +
+                                                    '<input type="checkbox" class="seleciona" '+checado+' value="'+grupo.id+'">' +
                                                     '<span></span>' +
                                                 '</label>' +
                                                 '' +
                                             '</div>' +
                                         '</div>' +
                                         '<div class="flex-grow-1 mt-1 mr-2" data-toggle="view">' +
-                                            '<div class="font-weight-bolder mr-2">'+grupo.bloco+' > '+grupo.pavimento+' > '+grupo.nome+'  '+canhoto+'</div>' +
+                                            '<div class="font-weight-bolder mr-2">'+grupo.bloco+' > '+grupo.pavimento+' > '+
+                                                '<a href="sala/'+grupo.id+'/editar" target="_BLANK">'+grupo.nome+'</a>'+
+                                            ' - '+grupo.carteiras+' lugares '+canhoto+'</div>' +
                                         '</div>' +
                                     '</div>');
 
@@ -123,6 +193,7 @@
             $(document).on('click', '.seleciona', function(e) {
 
                 check = $(this);
+               
                 if($(this).is(":checked")){                    
                     
                     KTApp.block('#kt_blockui_card', {
@@ -131,9 +202,16 @@
                         message: 'Aguarde... Processo de alocação da sala em andamento'
                         });
 
-                    setTimeout(function() {
-                    KTApp.unblock('#kt_blockui_card');
-                    }, 2000);
+                    $.ajax({
+                        url: '../grupos/alocar',
+                        type: 'POST',
+                        data: { "_token": token,
+                                "id_grupo": check.val() },
+                        success: function(response) {
+                            KTApp.unblock('#kt_blockui_card');
+                            atualizaCarteiras($("#local").val());
+                        }
+                    });
 
                 }else{
 
@@ -155,9 +233,21 @@
                                 message: 'Aguarde... Removendo a sala do evento'
                                 });
 
-                            setTimeout(function() {
-                            KTApp.unblock('#kt_blockui_card');
-                            }, 2000);
+                                $.ajax({
+                                    url: '../grupos/desalocar',
+                                    type: 'POST',
+                                    data: { "_token": token,
+                                            "id_grupo": check.val() },
+                                    success: function(response) {
+                                        atualizaCarteiras($("#local").val());
+                                    },
+                                    error: function(response) {
+                                        alert("Erro");
+                                    },
+                                    complete: function(response) {
+                                        KTApp.unblock('#kt_blockui_card');
+                                    }
+                                });
                             
                         }else if(result.dismiss == 'cancel'){
                             check.prop("checked", true);
@@ -169,7 +259,27 @@
 
             });
 
-            $('#local').on('select2:select',function (){
+            function atualizaCarteiras(local){
+
+                fetch('local/'+local+'/salas/ocupacao')
+                    .then(response => response.json())
+                    .then(function(dados){
+
+                        var total_utilizado = (dados.total_utilizado) ? dados.total_utilizado : 0;
+                        var total_carteiras = (dados.total_carteiras) ? dados.total_carteiras : 0;
+                        var percentual_local = (total_carteiras) ? Math.ceil((total_utilizado/total_carteiras)*100) : 0; 
+                        var label = (percentual_local) ? 'Ocupado' : 'Aguardando Dados'
+
+                        $(".total_utilizado").text(total_utilizado);
+                        $(".total_carteiras").text(total_carteiras);
+
+                        chart.updateSeries([percentual_local]);
+                        chart.updateOptions({labels: [label],});
+
+                    });
+            }
+
+            $('#local').on('change',function (){
 
                 let setor_elemento = document.getElementById('setor');
                 setor_elemento.innerHTML = '';
@@ -177,6 +287,8 @@
                 option.text = 'Selecione o setor';
                 option.value = '';
                 setor_elemento.appendChild(option);
+
+                $('.list').empty();
 
                 fetch('setor/local/'+this.value)
                     .then(response => response.json())
@@ -196,17 +308,7 @@
 
                     });
 
-                fetch('local/25/salas/ocupacao')
-                    .then(response => response.json())
-                    .then(function(dados){
-
-                        chart.updateSeries([dados.total]);
-
-                            chart.updateOptions({
-                                labels: ["Ocupado"],
-                            });
-
-                    });
+                atualizaCarteiras(this.value);
             });
 
             $('#setor').on('select2:select',function (){
@@ -321,7 +423,7 @@
 
             //_initMixedWidget18();
 
-            
+            $("#local").val(local).trigger('change');
 
         });
     </script>

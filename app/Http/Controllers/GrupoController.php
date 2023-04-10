@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
-
+use App\Models\Grupo;
 use App\Models\Sala;
 use App\Models\TipoCarteira;
 use App\Models\TipoSala;
@@ -24,7 +23,7 @@ class GrupoController extends Controller
     public function __construct()
     {
         //$this->middleware('auth');
-        $this->breadcrumb['icone'] = 'fas fa-user-group';
+        $this->breadcrumb['icone'] = 'fas fa-users';
         $this->breadcrumb['titulo'] = 'Grupos';
         $this->breadcrumb['itens'] = array();
 
@@ -45,6 +44,25 @@ class GrupoController extends Controller
         $tiposCarteira = TipoCarteira::orderBy('nm_tipo_tic')->get();
 
         return view('grupo.index', compact('breadcrumb','blocos', 'setores', 'pavimentos','locais'));
+    }
+
+    public function alocar(Request $request)
+    {
+        $sala = Sala::where('cd_sala_sal', $request->id_grupo)->first();
+
+        $chave = array('cd_evento_eef' =>$this->evento,
+                        'cd_sala_sal' => $request->id_grupo);
+
+        $dados = array('tipo_sala_tis_id' => 1,
+                       'nu_carteiras_evs' => round($sala->nu_carteiras_sal * 0.8));
+
+        Grupo::updateOrCreate($chave, $dados);
+    }
+
+    public function desalocar(Request $request)
+    {
+        $sala = Grupo::where('cd_evento_eef', $this->evento)->where('cd_sala_sal', $request->id_grupo)->first();
+        $sala->delete();
     }
 
     public function create()
