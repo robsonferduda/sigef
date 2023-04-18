@@ -211,6 +211,26 @@
                                         <span class="menu-text">Grupos</span>
                                     </a>
                                 </li>
+                                <li class="menu-section">
+									<h4 class="menu-text">COLABORADORES</h4>
+									<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+								</li>
+                                <li class="menu-item {{ (Session::get('menu_pai') == 'coordenadores') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('coordenadores') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-user-tag"></i>
+                                        </span>
+                                        <span class="menu-text">Coordenadores</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ (Session::get('menu_pai') == 'fiscais') ? 'menu-item-open' : '' }}" aria-haspopup="true">
+                                    <a href="{{ url('fiscais') }}"  class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <i class="fas fa-user-friends"></i>
+                                        </span>
+                                        <span class="menu-text">Fiscais</span>
+                                    </a>
+                                </li>
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true">
                                     <a href="{{ route('logout') }}" class="menu-link menu-toggle" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <span class="svg-icon menu-icon">
