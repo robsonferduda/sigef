@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 
-Route::get('alas','AlaController@index');
+Route::match(['GET', 'POST'],'alas','AlaController@index');
 Route::resource('ala','AlaController');
 
 Route::get('banheiros','BanheiroController@listar');

@@ -148,6 +148,13 @@ class EventoController extends Controller
         return redirect('eventos')->withInput();
     }
 
+    public function checaEvento()
+    {
+        if(isset($this->evento)){
+            redirect('eventos');
+        }
+    }
+
     public function locais()
     {
         /* Marcação de Menus */
