@@ -15,7 +15,9 @@
                 <div class="col-md-12">
                     @include('layouts.mensagens')
                 </div>
+                <div class="col-md-12">
                
+                </div>
             </div>
         </div>
     </div>
