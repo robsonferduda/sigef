@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ala;
 use App\Models\Local;
 use App\Models\Setor;
+use App\Models\SetorEvento;
 use App\Models\Bloco;
 use App\Models\Pavimento;
 use Illuminate\Http\Request;
@@ -41,9 +42,11 @@ class AlaController extends Controller
             $local = $request->local;
             $setor  = $request->setor;
 
+            $setor_evento = SetorEvento::where('cd_evento_eef', $this->evento)->where('cd_setor_set', $setor)->first();
+
             $alas = Ala::with(['SetorEvento'])
-                ->when($setor, function ($query) use ($setor) {
-                    return $query->where('cd_setor_evento_see', $local);
+                ->when($setor, function ($query) use ($setor_evento) {
+                    return $query->where('cd_setor_evento_see', $setor_evento->cd_setor_evento_see);
                 })
                 ->orderBy('nm_ala_ala')->get();
 
