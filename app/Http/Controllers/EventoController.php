@@ -171,8 +171,13 @@ class EventoController extends Controller
         $breadcrumb = $this->breadcrumb;
 
         $evento = Evento::find($this->evento);
-        $locais_disponiveis = Local::whereNotIn('cd_local_prova_lop', $evento->locais->map->only('cd_local_prova_lop')->toArray())->orderBy('nm_local_prova_lop')->get();
-        $locais_selecionados = $evento->locais;
+        $locais_disponiveis = array();
+        $locais_selecionados = array();
+
+        if($evento){
+            $locais_disponiveis = ($evento->locais) ? Local::whereNotIn('cd_local_prova_lop', $evento->locais->map->only('cd_local_prova_lop')->toArray())->orderBy('nm_local_prova_lop')->get() : array();
+            $locais_selecionados = $evento->locais;
+        }
 
         return view('evento/locais', compact('breadcrumb','locais_disponiveis','locais_selecionados'));
     }
