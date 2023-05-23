@@ -106,7 +106,7 @@
 
             var table = $('#kt_datatable').DataTable({
                 "processing": true,
-                "paginate": false,
+                "paginate": true,
                 "serverSide": true,
                 "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ],[ 3, "asc" ], [ 4, "asc" ],[ 5, "asc" ]],
                 "bFilter": false,

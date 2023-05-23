@@ -70,7 +70,7 @@
 
             var table = $('#kt_datatable').DataTable({
                 "processing": true,
-                "paginate": false,
+                "paginate": true,
                 "serverSide": true,
                 "order": [[ 1, "asc" ]],
                 "bFilter": false,
