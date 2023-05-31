@@ -52,6 +52,31 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group col-sm-6">
+                            <label>Bairro</label>
+                            <input type="text" name="bairro" class="form-control"
+                                   placeholder="Nome do Bairro"/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Endereço</label>
+                            <input type="text" name="endereco" class="form-control"
+                                   placeholder="Endereço"/>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Complemento</label>
+                            <input type="text" name="complemento" class="form-control"
+                                   placeholder="Complemento"/>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Cep</label>
+                            <input type="text" name="cep" class="form-control"
+                                   placeholder="Cep"/>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Município</label>
+                            <input type="text" name="municipio" class="form-control"
+                                   placeholder="Município"/>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">

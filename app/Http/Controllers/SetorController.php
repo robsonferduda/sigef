@@ -120,6 +120,7 @@ class SetorController extends Controller
 
     public function salvar(Request $request)
     {
+
         try {
 
             $setor = Setor::create([
@@ -127,7 +128,12 @@ class SetorController extends Controller
                 'cd_rede_ensino_ree' => $request->rede,
                 'nm_setor_set' => $request->nome,
                 'nm_abrev_setor_set' => $request->nome_abrev,
-                'nu_setor_set' => $request->codigo
+                'nu_setor_set' => $request->codigo,
+                'nm_bairro_set' => $request->bairro ?: null,
+                'ds_endereco_set' => $request->endereco ?: null,
+                'ds_complemento_set' => $request->complemento ?: null,
+                'nu_cep_set' => $request->cep ?: null,
+                'nm_municipio_set' => $request->municipio ?: null
             ]);
 
             if($setor) {
@@ -146,7 +152,6 @@ class SetorController extends Controller
             Flash::success("Dados inseridos com sucesso");
 
         } catch (\Illuminate\Database\QueryException $e) {
-
             Flash::warning(Utils::getDatabaseMessageByCode($e->getCode()));
 
         } catch (Exception $e) {
@@ -178,7 +183,12 @@ class SetorController extends Controller
                     'cd_rede_ensino_ree' => $request->rede,
                     'nm_abrev_setor_set' => $request->nome_abrev,
                     'nm_setor_set' => $request->nome,
-                    'nu_setor_set' => $request->codigo
+                    'nu_setor_set' => $request->codigo,
+                    'nm_bairro_set' => $request->bairro ?: null,
+                    'ds_endereco_set' => $request->endereco ?: null,
+                    'ds_complemento_set' => $request->complemento ?: null,
+                    'nu_cep_set' => $request->cep ?: null,
+                    'nm_municipio_set' => $request->municipio ?: null
                 ]);
 
                 if(isset($setor->contatos)) {
